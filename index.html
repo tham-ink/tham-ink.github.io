@@ -7,7 +7,6 @@
   <style>
     .terminal {
       background-color: #282b2d;
-      color: #4AF626;
     }
   </style>
   <title>>t.ink</title>
@@ -23,7 +22,8 @@
         abtme: "Displays information about the portfolio owner.",
         links: "Shows links to various social media profiles.",
         contact: "Provides contact information.",
-        playlists: "Shows an embedded Spotify playlist."
+        playlists: "Shows an embedded Spotify playlist.",
+        clear: "Clears the terminal."
     };
 
     $('body').terminal({
@@ -53,9 +53,16 @@
             const iframeContent2 = `<iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/63OXywybsEL3478whnJcj4?utm_source=generator" width="400" height="400" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
 
             this.echo(`<div style="display: flex;">${iframeContent1}${iframeContent2}</div>`, { raw: true });
+        },
+        clear: function() {
+            for (let i = 0; i < 50; i++) {
+                this.echo('\n');
+            }
         }
-    }, {
+    }, { 
         prompt: 'visitor@terminal.tham.ink:~$ ',
+
+
         greetings: `
   $$\\     $$\\                                   $$\\           $$\\       
   $$ |    $$ |                                  \\__|          $$ |      
@@ -67,7 +74,7 @@ $$$$$$\\   $$$$$$$\\   $$$$$$\\  $$$$$$\\$$$$\\      $$\\ $$$$$$$\\  $$ |  $$\\
    \\____/ \\__|  \\__| \\_______|\\__| \\__| \\__|\\__|\\__|\\__|  \\__|\\__|  \\__| 
 
 type help for a list of commands\n`
-    });
-  </script>
-</body>
-</html>
+          });
+        </script>
+      </body>
+      </html>
