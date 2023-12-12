@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdn.jsdelivr.net/npm/jquery"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery.terminal/js/jquery.terminal.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery.terminal/css/jquery.terminal.min.css"/>
+  <style>
+    .terminal {
+      background-color: #282b2d;
+      color: #4AF626;
+    }
+  </style>
+</head>
+<body>
+  <script>
+    const commands = {
+        help: "Displays a list of available commands and their descriptions.",
+        abtme: "Displays information about the portfolio owner.",
+        links: "Shows links to various social media profiles.",
+        contact: "Provides contact information.",
+        playlists: "Shows an embedded Spotify playlist."
+    };
+
+    $('body').terminal({
+        abtme: function() {
+            this.echo("Welcome to my portfolio!");
+        },
+        links: function() {
+            this.echo('You can find me on the following websites:');
+            this.echo('Instagram: https://www.instagram.com/tham_ink');
+            this.echo('Twitter: https://twitter.com/tham.ink');
+            this.echo('Spotify: https://open.spotify.com/artist/4ifSijVOL8L77NgFeqi5Ef?si=3fE3KTbOQZ-1gUmZ_xIfrw');
+        },
+        help: function() {
+            let output = 'Available commands and their descriptions:\n';
+            for (let command in commands) {
+                output += `${command}: ${commands[command]}\n`;
+            }
+            this.echo(output);
+        },
+        contact: function() {
+            this.echo('You can contact me via email: tm@tham.ink');
+            // Add any other contact information or links here
+        },
+        playlists: function() {
+            const iframeContent1 = `<iframe style="border-radius:12px; margin-right: 20px;" src="https://open.spotify.com/embed/playlist/0dJYvVz8yJmBRX9RIDDDDD?utm_source=generator" width="400" height="400" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
+
+            const iframeContent2 = `<iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/63OXywybsEL3478whnJcj4?utm_source=generator" width="400" height="400" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
+
+            this.echo(`<div style="display: flex;">${iframeContent1}${iframeContent2}</div>`, { raw: true });
+        }
+    }, {
+        prompt: 'visitor@terminal.tham.ink:~$ ',
+        greetings: `
+  $$\\     $$\\                                   $$\\           $$\\       
+  $$ |    $$ |                                  \\__|          $$ |      
+$$$$$$\\   $$$$$$$\\   $$$$$$\\  $$$$$$\\$$$$\\      $$\\ $$$$$$$\\  $$ |  $$\\ 
+\\_$$  _|  $$  __$$\\  \\____$$\\ $$  _$$  _$$\\     $$ |$$  __$$\\ $$ | $$  |
+  $$ |    $$ |  $$ | $$$$$$$ |$$ / $$ / $$ |    $$ |$$ |  $$ |$$$$$$  / 
+  $$ |$$\\ $$ |  $$ |$$  __$$ |$$ | $$ | $$ |    $$ |$$ |  $$ |$$  _$$<  
+  \\$$$$  |$$ |  $$ |\\$$$$$$$ |$$ | $$ | $$ |$$\\ $$ |$$ |  $$ |$$ | \\$$\\ 
+   \\____/ \\__|  \\__| \\_______|\\__| \\__| \\__|\\__|\\__|\\__|  \\__|\\__|  \\__| 
+
+type help for a list of commands\n`
+    });
+  </script>
+</body>
+</html>
