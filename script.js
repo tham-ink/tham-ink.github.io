@@ -21,7 +21,7 @@ const hexRegex = /^#[0-9A-F]{6}$/i;
 
 $('body').terminal({
   help: function() {
-      let output = 'Available commands and their descriptions:\n';
+      let output = '\nAvailable commands and their descriptions:\n';
 
       for (let category in commands) {
           output += `\n> ${category.toUpperCase()}\n`;
@@ -34,16 +34,16 @@ $('body').terminal({
   },
 
   abtme: function() {
-      this.echo("Welcome to my portfolio!\n");
+      this.echo("\nWelcome to my portfolio!\n");
   },
   links: function() {
-      this.echo('You can find me on the following websites:');
+      this.echo('\nYou can find me on the following websites:');
       this.echo('Instagram: https://www.instagram.com/tham_ink');
       this.echo('Twitter: https://twitter.com/tham_ink');
       this.echo('Spotify: https://open.spotify.com/artist/4ifSijVOL8L77NgFeqi5Ef?si=3fE3KTbOQZ-1gUmZ_xIfrw\n');
   },
   contact: function() {
-      this.echo('You can contact me via email: tm@tham.ink\n');
+      this.echo('\nYou can contact me via email: tm@tham.ink\n');
   },
   playlists: function() {
       const iframeContent1 = `<iframe style="border-radius:12px; margin-right: 20px;" src="https://open.spotify.com/embed/playlist/0dJYvVz8yJmBRX9RIDDDDD?utm_source=generator" width="400" height="400" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
@@ -56,32 +56,32 @@ $('body').terminal({
 
     clear: function() {
       for (let i = 0; i < 50; i++) {
-        this.echo('\n');            
+        this.echo('\n');
   }
 },
 
 changeTextColor: function(color) {
     if (validColors.includes(color) || hexRegex.test(color)) {
         $(':root').css('--text-color', color);
-        this.echo(`Text color changed to ${color}.`);
+        this.echo(`Text color changed to ${color}.\n`);
     } else {
-        this.echo(`Invalid color. Please choose from named colors or use a valid hex code.`);
+        this.echo(`Invalid color. Please choose from named colors or use a valid hex code.\n`);
     }
 },
 
 changeBackgroundColor: function(color) {
     if (validColors.includes(color) || hexRegex.test(color)) {
         $(':root').css('--bg-color', color);
-        this.echo(`Text color changed to ${color}.`);
+        this.echo(`Text color changed to ${color}.\n`);
     } else {
-        this.echo(`Invalid color. Please choose from named colors or use a valid hex code.`);
+        this.echo(`Invalid color. Please choose from named colors or use a valid hex code.\n`);
     }
 },
 
 resetColors: function() {
   $(':root').css('--text-color', ''); // Reset text color variable
   $(':root').css('--bg-color', ''); // Reset background color variable
-  this.echo('Colors reset to default.');
+  this.echo('Colors reset to default.\n');
 },
 
 //LETHAL COMMANDS
