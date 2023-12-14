@@ -53,10 +53,9 @@ $('body').terminal({
       this.echo(`<div style="display: flex;">${iframeContent1}${iframeContent2}</div>`, { raw: true });
       this.echo('\n')
   },
-
-    clear: function() {
-      for (let i = 0; i < 50; i++) {
-        this.echo('\n');
+  clear: function() {
+     for (let i = 0; i < 50; i++) {
+      this.echo('\n');
   }
 },
 
