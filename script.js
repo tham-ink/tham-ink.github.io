@@ -3,21 +3,25 @@ const commands = {
       help: "Displays a list of available commands and their descriptions.",
       abtme: "Displays information about the portfolio owner.",
       links: "Shows links to various social media profiles.",
+      projects: "Shows a list of projects that the portfolio owner is either working on or completed",
       contact: "Provides contact information.",
-      playlists: "Shows an embedded Spotify playlist.",
-      clear: "Clears the terminal.",
+      clear: "Clears the terminal."
 
   },
   fun: {
       changeTextColor: "Changes the text color.",
       changeBackgroundColor: "Changes the background color.",
       resetColors: "Resets the text and background colors.",
-      start: "???",
+      playlists: "Shows my personal Spotify playlists"
   }
 };
 const validColors = ['white', 'grey', 'black', 'purple', 'yellow', 'orange', 'red', 'blue', 'green'];
 const hexRegex = /^#[0-9A-F]{6}$/i;
-
+const projects = {
+  projects: {
+    capstone: "Grade 12 capstone where I created a song."
+  }
+}
 
 $('body').terminal({
   help: function() {
@@ -34,24 +38,16 @@ $('body').terminal({
   },
 
   abtme: function() {
-      this.echo("\nWelcome to my portfolio!\n");
+      this.echo("\nWelcome to my portfolio! You can find all my social media proifles as well as projects that I have worked on.\n");
   },
   links: function() {
       this.echo('\nYou can find me on the following websites:');
-      this.echo('Instagram: https://www.instagram.com/tham_ink');
+      this.echo('Instagram (not in use): https://www.instagram.com/tham_ink');
       this.echo('Twitter: https://twitter.com/tham_ink');
-      this.echo('Spotify: https://open.spotify.com/artist/4ifSijVOL8L77NgFeqi5Ef?si=3fE3KTbOQZ-1gUmZ_xIfrw\n');
   },
   contact: function() {
       this.echo('\nYou can contact me via email: tm@tham.ink\n');
-  },
-  playlists: function() {
-      const iframeContent1 = `<iframe style="border-radius:12px; margin-right: 20px;" src="https://open.spotify.com/embed/playlist/0dJYvVz8yJmBRX9RIDDDDD?utm_source=generator" width="400" height="400" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
-
-      const iframeContent2 = `<iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/63OXywybsEL3478whnJcj4?utm_source=generator" width="400" height="400" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
-
-      this.echo(`<div style="display: flex;">${iframeContent1}${iframeContent2}</div>`, { raw: true });
-      this.echo('\n')
+      this.echo('You can also contact me on my X (formerly Twitter) account and Instagram account')
   },
   clear: function() {
      for (let i = 0; i < 50; i++) {
@@ -81,6 +77,27 @@ resetColors: function() {
   $(':root').css('--text-color', ''); // Reset text color variable
   $(':root').css('--bg-color', ''); // Reset background color variable
   this.echo('Colors reset to default.\n');
+},
+
+playlists: function() {
+  const iframeContent1 = `<iframe style="border-radius:12px; margin-right: 20px;" src="https://open.spotify.com/embed/playlist/0dJYvVz8yJmBRX9RIDDDDD?utm_source=generator" width="400" height="400" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
+
+  const iframeContent2 = `<iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/63OXywybsEL3478whnJcj4?utm_source=generator" width="400" height="400" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
+
+  this.echo(`<div style="display: flex;">${iframeContent1}${iframeContent2}</div>`, { raw: true });
+  this.echo('\n')
+},
+
+//PROJECTS
+projects: function() {
+  this.echo('\nList of projects that I am either working on or completed:\n'),
+  this.echo('capstone: Grade 12 capstone project where I learn how to produce music\n')
+},
+
+capstone: function() {
+  this.echo('\nCurrently in progress. Roughly 40% completed\n')
+  this.echo('Checklist:')
+  this.echo('60% - script\n30% - video\n30% - recording\n0% - song\n0% - album cover\n0% - distribution\n')
 },
 
 //LETHAL COMMANDS
