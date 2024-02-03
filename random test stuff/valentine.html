@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+        }
+
+        .textnstuff {
+          display: flex;
+          flex-direction: column;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        button {
+            font-size: 16px;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+        }
+
+        #button1 {
+            background-color: #2ecc71; /* Default color for button1 */
+            color: #fff;
+            transition: font-size 0.3s ease-in-out, background-color 0.3s ease-in-out;
+        }
+
+        #button1:hover {
+            background-color: #2CC16C;
+        }
+
+        #button2 {
+            background-color: #C3391E; /* Default color for button2 */
+            color: #fff;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        #button2:hover {
+            background-color: #BB351A;
+        }
+        img {
+            width: 200px;
+            margin-top: 20px;
+        }
+    </style>
+    <title>will u be my valentine :3</title>
+</head>
+<body>
+  <div class='textnstuff'>
+    <h2>will u be my valentine :3</h2>
+    <img src="https://media0.giphy.com/media/fvN5KrNcKKUyX7hNIA/giphy.gif" alt="Valentine's Day Image">
+  </div>
+    <button id="button1" onclick="redirectToNewPage()">ofc bbg</button>
+    <button id="button2" onclick="enlargeButton1()">no</button>
+
+    <script>
+        let button1 = document.getElementById('button1');
+        let button2 = document.getElementById('button2');
+        let enlargementFactor = 2;
+
+        // Array of possible text values for Button 2
+        let buttonTextOptions = ['are u fr', 'no are u actually deadass', 'girl', 'please', 'u cant be fr', 'ur breaking my heart', 'its so over chat'];
+
+        // Index to keep track of the current text in the array
+        let buttonTextIndex = 0;
+
+        function enlargeButton1() {
+            let currentSize = window.getComputedStyle(button1, null).getPropertyValue('font-size');
+            let newSize = parseFloat(currentSize) * enlargementFactor;
+            button1.style.fontSize = newSize + 'px';
+
+            // Change text of Button 2
+            buttonTextIndex = (buttonTextIndex + 5) % buttonTextOptions.length;
+            button2.innerText = buttonTextOptions[buttonTextIndex];
+        }
+
+        function redirectToNewPage() {
+            // Change the URL to the new page
+            window.location.href = 'https://tham.ink/valentineB.html';
+        }
+
+        // Function to change the color of Button 1
+        function changeColorButton1(color) {
+            button1.style.backgroundColor = color;
+        }
+
+        // Example: Change the color of Button 1 to red
+        // Uncomment the line below and place it where you want to change the color
+        // changeColorButton1('#e74c3c');
+    </script>
+</body>
+</html>

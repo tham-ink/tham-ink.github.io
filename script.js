@@ -88,6 +88,10 @@ playlists: function() {
   this.echo('\n')
 },
 
+valentine: function() {
+  window.location.href = 'https://tham.ink/valentine.html';
+},
+
 //PROJECTS
 projects: function() {
   this.echo('\nList of projects that I am either working on or completed:\n'),
