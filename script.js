@@ -89,7 +89,7 @@ playlists: function() {
 },
 
 valentine: function() {
-  window.location.href = 'https://tham.ink/valentine.html';
+  window.location.href = '/random/valentine.html';
 },
 
 //PROJECTS
