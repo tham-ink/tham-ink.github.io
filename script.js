@@ -17,11 +17,6 @@ const commands = {
 };
 const validColors = ['white', 'grey', 'black', 'purple', 'yellow', 'orange', 'red', 'blue', 'green'];
 const hexRegex = /^#[0-9A-F]{6}$/i;
-const projects = {
-  projects: {
-    capstone: "Grade 12 capstone where I created a song."
-  }
-}
 
 $('body').terminal({
   help: function() {
@@ -89,7 +84,7 @@ playlists: function() {
 },
 
 'random': function() {
-  window.location.href = 'https://tham.ink/r/main';
+  window.location.href = 'https://tham.ink/r';
 },
 
 //PROJECTS
