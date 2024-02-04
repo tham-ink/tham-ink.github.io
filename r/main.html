@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Website</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column; /* Align items in a column */
+      height: 100vh;
+      margin: 0;
+    }
+
+    .box {
+      margin: 10px; /* Adjust the margin as needed */
+      border-radius: 15px;
+      overflow: hidden;
+      width: 300px; /* Adjust the width as needed */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .box img {
+      width: 100%;
+      height: auto;
+      border-top-left-radius: 15px;
+      border-top-right-radius: 15px;
+    }
+
+    .box-text {
+      padding: 15px;
+      text-align: center;
+    }
+
+    .back-button {
+      background-color: #888;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 20px; /* Adjust the margin as needed */
+    }
+
+    h1 {
+        font-size: 32px;
+        padding: 10px 10px;
+    }
+
+    /* Style for the footer */
+    footer {
+      background-color: #ffffff;
+      color: #dadada;
+      text-align: center;
+      padding: 10px;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+<h1>tham.ink</h1>
+  <div class="box">
+    <img src="https://media0.giphy.com/media/fvN5KrNcKKUyX7hNIA/giphy.gif" onclick="valentine()" alt="Your Image 1">
+    <div class="box-text" onclick="valentine()">valentine</div>
+  </div>
+
+  <!-- Back button -->
+  <button class="back-button" onclick="goBack()">Back</button>
+
+  <script>
+    function goBack() {
+      window.location.href = 'https://tham.ink/';
+    }
+
+    function valentine() {
+        window.location.href = 'https://tham.ink/r/valentine'
+    }
+  </script>
+
+  <footer>
+    tham.ink 2024
+  </footer>
+</body>
+</html>

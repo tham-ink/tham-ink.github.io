@@ -88,14 +88,8 @@ playlists: function() {
   this.echo('\n')
 },
 
-//RANDOM SHIT I ADDED
-'‼': function() {
-  this.echo('\nShows a list of random stuff that I wanted to host on a website:\n'),
-  this.echo('❤: redirects to a valentine proposal thingy that chatgpt made 💀\n')
-},
-
-'❤': function() {
-  window.location.href = 'https://tham.ink/random/valentine.html';
+'random': function() {
+  window.location.href = 'https://tham.ink/r/main';
 },
 
 //PROJECTS
