@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>gpt clock</title>
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      height: 100vh;
+      margin: 0;
+      background-color: #ffffff;
+    }
+
+    #clock {
+      font-family: 'Arial', sans-serif;
+      font-size: 2em;
+      color: #333;
+      display: flex;
+      margin-bottom: 10px; /* Add some margin between clock and greeting */
+    }
+
+    #greeting {
+      font-family: 'Arial', sans-serif;
+      font-size: 1.5em;
+      color: #555;
+    }
+
+    .digit, .colon {
+      transition: transform 0.5s, opacity 0.5s;
+    }
+
+    .animated {
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    footer {
+      background-color: rgba(51, 51, 51, 0);
+      color: #dadada;
+      text-align: center;
+      padding: 10px;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+    }
+
+    .footertext {
+      color: #dadada; 
+    }
+
+  </style>
+</head>
+<body>
+  <div id="clock">
+    <span class="digit" id="hours-tens">0</span>
+    <span class="digit" id="hours-units">0</span>
+    <span class="colon">:</span>
+    <span class="digit" id="minutes-tens">0</span>
+    <span class="digit" id="minutes-units">0</span>
+    <span class="colon">:</span>
+    <span class="digit" id="seconds-tens">0</span>
+    <span class="digit" id="seconds-units">0</span>
+    <span id="am-pm"> </span>
+  </div>
+
+  <div id="greeting"></div>
+
+  <script>
+    function updateClock() {
+      const now = new Date();
+
+      let hours = now.getHours();
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+      const seconds = now.getSeconds().toString().padStart(2, '0');
+
+      const amPmElement = document.getElementById('am-pm');
+      const greetingElement = document.getElementById('greeting');
+
+      if (hours >= 12) {
+        amPmElement.textContent = 'PM';
+        if (hours > 12) {
+          hours -= 12;
+        }
+      } else {
+        amPmElement.textContent = 'AM';
+        if (hours === 0) {
+          hours = 12;
+        }
+      }
+
+      updateDigit('hours-tens', Math.floor(hours / 10));
+      updateDigit('hours-units', hours % 10);
+      updateDigit('minutes-tens', minutes[0]);
+      updateDigit('minutes-units', minutes[1]);
+      updateDigit('seconds-tens', seconds[0]);
+      updateDigit('seconds-units', seconds[1]);
+
+      updateColonAnimation('colon1');
+      updateColonAnimation('colon2');
+
+      updateGreeting(now);
+    }
+
+    function updateDigit(id, value) {
+      const digitElement = document.getElementById(id);
+
+      if (digitElement.textContent !== value) {
+        digitElement.textContent = value;
+        digitElement.classList.add('animated');
+        setTimeout(() => digitElement.classList.remove('animated'), 500);
+      }
+    }
+
+    function updateColonAnimation(id) {
+      const colonElement = document.getElementById(id);
+      colonElement.classList.add('animated');
+      setTimeout(() => colonElement.classList.remove('animated'), 500);
+    }
+
+    function updateGreeting(now) {
+  const hour = now.getHours();
+
+  if (hour < 4) {
+    document.getElementById('greeting').textContent = 'might be time for bed man';
+  } else if (hour < 12) {
+    document.getElementById('greeting').textContent = 'u should proly be asleep rn';
+  } else if (hour >= 12 && hour < 18) {
+    document.getElementById('greeting').textContent = 'its almost over i swear';
+  } else {
+    document.getElementById('greeting').textContent = "WE ARE SO FUCKING UP";
+  }
+}
+
+    function startClock() {
+      setInterval(updateClock, 1000); // Update the clock every second (1000 milliseconds)
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      startClock();
+      updateGreeting(new Date());
+    });
+  </script>
+  <footer>
+    <a href='https://tham.ink' class='footertext'>tham.ink</a> 2024
+  </footer>
+</body>
+</html>
