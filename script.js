@@ -38,11 +38,11 @@ $('body').terminal({
   links: function() {
       this.echo('\nYou can find me on the following websites:');
       this.echo('Instagram (not in use): https://www.instagram.com/tham_ink');
-      this.echo('Twitter: https://twitter.com/tham_ink');
+      this.echo('Twitter: https://twitter.com/tham_ink\n');
   },
   contact: function() {
-      this.echo('\nYou can contact me via email: tm@tham.ink\n');
-      this.echo('You can also contact me on my X (formerly Twitter) account and Instagram account')
+      this.echo('\nYou can contact me via email: tm@tham.ink');
+      this.echo('You can also contact me on my X (formerly Twitter) account @tham.ink \n')
   },
   clear: function() {
      for (let i = 0; i < 50; i++) {

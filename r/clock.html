@@ -110,9 +110,6 @@
       updateDigit('seconds-tens', seconds[0]);
       updateDigit('seconds-units', seconds[1]);
 
-      updateColonAnimation('colon1');
-      updateColonAnimation('colon2');
-
       updateGreeting(now);
     }
 
@@ -121,34 +118,38 @@
 
       if (digitElement.textContent !== value) {
         digitElement.textContent = value;
-        digitElement.classList.add('animated');
-        setTimeout(() => digitElement.classList.remove('animated'), 500);
+        if (id.includes('seconds') || id.includes('minutes')) { // Only animate seconds and minutes
+          digitElement.classList.add('animated');
+          setTimeout(() => digitElement.classList.remove('animated'), 500);
+        }
       }
     }
 
-    function updateColonAnimation(id) {
-      const colonElement = document.getElementById(id);
-      colonElement.classList.add('animated');
-      setTimeout(() => colonElement.classList.remove('animated'), 500);
-    }
-
     function updateGreeting(now) {
-  const hour = now.getHours();
+      const hour = now.getHours();
+      const minutes = now.getMinutes();
+      const seconds = now.getSeconds();
 
-  if (hour < 4) {
-    document.getElementById('greeting').textContent = 'might be time for bed man';
-  } else if (hour < 12) {
-    document.getElementById('greeting').textContent = 'u should proly be asleep rn';
-  } else if (hour >= 12 && hour < 18) {
-    document.getElementById('greeting').textContent = 'its almost over i swear';
-  } else {
-    document.getElementById('greeting').textContent = "WE ARE SO FUCKING UP";
-  }
-}
+
+      if (hour === 0 && minutes === 0 && seconds === 0) {
+        document.getElementById('greeting').textContent = 'loading.';
+      } else if (hour < 4) {
+        document.getElementById('greeting').textContent = 'might be time for bed man';
+      } else if (hour < 12) {
+        document.getElementById('greeting').textContent = 'u should proly be asleep rn';
+      } else if (hour >= 12 && hour < 18) {
+        document.getElementById('greeting').textContent = 'its almost over i swear';
+      } else {
+        document.getElementById('greeting').textContent = "WE ARE SO FUCKING UP";
+      }
+    }
 
     function startClock() {
       setInterval(updateClock, 1000); // Update the clock every second (1000 milliseconds)
+      setInterval(updateColonAnimation, 1000); // Animate colons separately
     }
+
+    // im a fucking genius
 
     document.addEventListener('DOMContentLoaded', function () {
       startClock();
