@@ -135,9 +135,11 @@
         document.getElementById('greeting').textContent = 'loading.';
       } else if (hour < 4) {
         document.getElementById('greeting').textContent = 'might be time for bed man';
-      } else if (hour < 12) {
+      } else if (hour < 8) {
         document.getElementById('greeting').textContent = 'u should proly be asleep rn';
-      } else if (hour >= 12 && hour < 18) {
+      } else if (hour < 12) {
+        document.getElementById('greeting').textContent = 'im gonna kms i stg';
+      } else if (hour < 18) {
         document.getElementById('greeting').textContent = 'its almost over i swear';
       } else {
         document.getElementById('greeting').textContent = "WE ARE SO FUCKING UP";
