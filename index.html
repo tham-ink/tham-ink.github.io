@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>tham's note hub</title>
+<style>
+  body {
+    background: radial-gradient(circle, #ffcccc 0%, #ffffff 100%);
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin: auto 0;
+  }
+  .left-column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .box {
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(5px);
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: #333;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    padding: 20px;
+    text-align: center;
+  }
+  .box1 {
+    width: 250px;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .box2 {
+      width: 250px;
+      height: 280px;
+      font-size: 18px;
+      display: flex; /* use flexbox for centering */
+      justify-content: center; /* center horizontally */
+      align-items: center; /* center vertically */
+      text-align: center; /* ensure multi-line text is centered */
+  }
+
+  .box2 .content {
+      max-width: 100%; /* prevent content from overflowing */
+  }
+
+  .box3 {
+    width: 300px;
+    height: 540px;
+    font-size: 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  hr {
+    border: none;
+    border-top: 1px solid rgba(255, 182, 193, 0.4);
+    width: 80%;
+    margin: 10px 0;
+  }
+  .clickable-text {
+      color: #ffb6c1; /* pastel pink color for clickable text */
+      text-decoration: none; /* remove underline */
+      cursor: pointer;
+      transition: text-shadow 0.3s ease; /* smooth transition for the glow effect */
+  }
+
+  .clickable-text:hover {
+      text-shadow: 0 0 15px rgba(255, 182, 193, 1), /* stronger glow */
+                   0 0 25px rgba(255, 182, 193, 0.8), 
+                   0 0 35px rgba(255, 182, 193, 0.6);
+  }
+
+  footer {
+    padding: 10px;
+    color: #ffb6c1;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px;
+    text-align: center;
+  }
+</style>
+<link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+<link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+<meta name="theme-color" content="#ffffff">
+</head>
+<body>
+<div class="container">
+  <div class="left-column">
+    <div class="box box1">tham's note hub</div>
+    <div class="box box2">
+      <div class="content">
+        please note that these are taken straight out of the textbook and put into note form via gpt-4o and are <em>not</em> meant to replace your textbook, just meant as a quick guide
+      </div>
+    </div>
+
+  </div>
+  <div class="box box3">
+    <a href="#" class="clickable-text">fmgt ch1</a>
+  </div>
+</div>
+<footer>created by tham, powered by gpt-4o</footer>
+</body>
+</html>
