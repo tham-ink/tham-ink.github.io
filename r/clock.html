@@ -3,7 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<<<<<< HEAD
   <title>gpt clock</title>
+=======
+  <title>clock</title>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro" rel="stylesheet">
+>>>>>>> c07f5a2190e0534b00e210d27b29ed44877899ed
   <style>
     body {
       display: flex;
@@ -16,15 +22,17 @@
     }
 
     #clock {
-      font-family: 'Arial', sans-serif;
+      font-family: 'Source Serif Pro', serif;
       font-size: 2em;
+      font-weight: 700;
       color: #333;
       display: flex;
       margin-bottom: 10px; /* Add some margin between clock and greeting */
     }
 
     #greeting {
-      font-family: 'Arial', sans-serif;
+      font-family: 'Source Serif Pro', serif;
+      font-weight: 400;
       font-size: 1.5em;
       color: #555;
     }
@@ -47,22 +55,6 @@
         transform: translateY(0);
       }
     }
-
-    footer {
-      font-family: 'Arial', sans-serif;
-      background-color: rgba(51, 51, 51, 0);
-      color: #dadada;
-      text-align: center;
-      padding: 10px;
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-    }
-
-    .footertext {
-      color: #dadada; 
-    }
-
   </style>
 </head>
 <body>
@@ -136,7 +128,7 @@
       } else if (hour < 4) {
         document.getElementById('greeting').textContent = 'might be time for bed man';
       } else if (hour < 8) {
-        document.getElementById('greeting').textContent = 'u should proly be asleep rn';
+        document.getElementById('greeting').textContent = 'wakey wakey';
       } else if (hour < 12) {
         document.getElementById('greeting').textContent = 'im gonna kms i stg';
       } else if (hour < 18) {
@@ -158,8 +150,5 @@
       updateGreeting(new Date());
     });
   </script>
-  <footer>
-    <a href='https://tham.ink' class='footertext'>tham.ink</a> 2024
-  </footer>
 </body>
 </html>
