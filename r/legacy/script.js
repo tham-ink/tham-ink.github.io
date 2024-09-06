@@ -11,7 +11,8 @@ const commands = {
       changeTextColor: "Changes the text color.",
       changeBackgroundColor: "Changes the background color.",
       resetColors: "Resets the text and background colors.",
-      playlists: "Shows my personal Spotify playlists"
+      playlists: "Shows my personal Spotify playlists",
+      start: "Boots up Lethal Company style terminal"
   }
 };
 const validColors = ['white', 'grey', 'black', 'purple', 'yellow', 'orange', 'red', 'blue', 'green'];
