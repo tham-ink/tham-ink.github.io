@@ -3,7 +3,6 @@ const commands = {
       help: "Displays a list of available commands and their descriptions.",
       abtme: "Displays information about the portfolio owner.",
       links: "Shows links to various social media profiles.",
-      projects: "Shows a list of projects that the portfolio owner is either working on or completed",
       contact: "Provides contact information.",
       clear: "Clears the terminal."
 
@@ -12,7 +11,8 @@ const commands = {
       changeTextColor: "Changes the text color.",
       changeBackgroundColor: "Changes the background color.",
       resetColors: "Resets the text and background colors.",
-      playlists: "Shows my personal Spotify playlists"
+      playlists: "Shows my personal Spotify playlists",
+      start: "Boots up Lethal Company style terminal"
   }
 };
 const validColors = ['white', 'grey', 'black', 'purple', 'yellow', 'orange', 'red', 'blue', 'green'];
@@ -85,18 +85,6 @@ playlists: function() {
 
 'random': function() {
   window.location.href = 'https://tham.ink/r';
-},
-
-//PROJECTS
-projects: function() {
-  this.echo('\nList of projects that I am either working on or completed:\n'),
-  this.echo('capstone: Grade 12 capstone project where I learn how to produce music\n')
-},
-
-capstone: function() {
-  this.echo('\nCurrently in progress. Roughly 40% completed\n')
-  this.echo('Checklist:')
-  this.echo('60% - script\n30% - video\n30% - recording\n0% - song\n0% - album cover\n0% - distribution\n')
 },
 
 //LETHAL COMMANDS
