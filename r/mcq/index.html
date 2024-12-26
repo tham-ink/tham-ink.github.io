@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>tham's note hub</title>
+<style>
+  body {
+    background: radial-gradient(circle, #ffcccc 0%, #ffffff 100%);
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .main-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    flex-grow: 1; /* Allow the content to grow and take available space */
+  }
+
+  .left-column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .box {
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(5px);
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: #333;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .box1 {
+    width: 300px;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .box2 {
+    width: 300px;
+    height: 280px;
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  .box2 .content {
+    max-width: 100%;
+  }
+
+  .box3 {
+    width: 400px;
+    height: 540px;
+    font-size: 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .box4 {
+    width: 340px;
+    height: 540px;
+    font-size: 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid rgba(255, 182, 193, 0.4);
+    width: 80%;
+    margin: 10px 0;
+  }
+
+  .clickable-text {
+    color: #ffb6c1;
+    text-decoration: none;
+    cursor: pointer;
+    transition: text-shadow 0.3s ease;
+  }
+
+  .clickable-text:hover {
+    text-shadow: 0 0 15px rgba(255, 182, 193, 1),
+                 0 0 25px rgba(255, 182, 193, 0.8), 
+                 0 0 35px rgba(255, 182, 193, 0.6);
+  }
+
+  footer {
+    margin-top: auto;
+    padding: 10px;
+    color: #ffb6c1;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px;
+    text-align: center;
+  }
+  .countdown {
+    font-size: 14px; /* smaller text size */
+    color: rgba(51, 51, 51, 0.3); /* lighter color with 0.3 transparency */
+    margin-top: 5px; /* reduce the gap */
+  }
+
+</style>
+</head>
+<body>
+<div class="main-content">
+  <div class="left-column">
+    <div class="box box1">tham's note hub</div>
+    <div class="box box2">
+      <div class="content">
+        please note that these are taken straight out of the textbook and put into note form via gpt-4o and are <em>not</em> meant to replace your textbook, just meant as a quick guide
+      </div>
+    </div>
+  </div>
+  
+   <!--add notes and mcq here-->
+  <div class="box box3">
+    <p>notes</p>
+    <a href="#" class="clickable-text">fmgt ch1</a>
+    <hr>
+    <p>multiple choice questions</p>
+    <a href="mcq/fmgt-ch1.html" class="clickable-text">fmgt ch1</a>
+  </div>
+
+  <!--dont touch below here-->
+  <div class="box box4">
+    <p>daily playlist</p>
+    <p id="countdown" class="countdown">time until tmrw: 00:00:00</p>
+    <iframe id="spotifyIframe" style="border-radius:12px" width="100%" height="352" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+  </div>
+</div>
+<footer>created by tham, powered by gpt-4o</footer>
+  <script>
+    const spotifyPlaylists = [
+      'https://open.spotify.com/embed/playlist/5ekQ7nPxbpyldHBtWmuxnZ?utm_source=generator', 
+      'https://open.spotify.com/embed/playlist/0dJYvVz8yJmBRX9RIDDDDD?utm_source=generator',
+      'https://open.spotify.com/embed/playlist/6Y359a0knTrxmLsqfqGnah?utm_source=generator',
+      'https://open.spotify.com/embed/album/0Zy1iguNjxgOBIza0n9xgc?utm_source=generator',
+      'https://open.spotify.com/embed/playlist/5bzU2EMeOMrMvFINrdbQjy?utm_source=generator',
+      'https://open.spotify.com/embed/playlist/009yoVOibYzHbzrsletMj9?utm_source=generator',
+      'https://open.spotify.com/embed/playlist/37i9dQZF1DXcUY9O5yRihK?utm_source=generator',
+      'https://open.spotify.com/embed/playlist/37i9dQZF1DXatAcVHpXNIq?utm_source=generator',
+      'https://open.spotify.com/embed/playlist/1CKZs4Atk5gBaL40EUVZRg?utm_source=generator',
+      'https://open.spotify.com/embed/playlist/11X76c5MphTG1VgKmC7hgb?utm_source=generator',
+      'https://open.spotify.com/embed/playlist/390Jt65OCogeUtBB0Dp19i?utm_source=generator',
+      'https://open.spotify.com/embed/track/4IadxL6BUymXlh8RCJJu7T?utm_source=generator',
+      'https://open.spotify.com/embed/playlist/0vvXsWCC9xrXsKd4FyS8kM?utm_source=generator',
+      'https://open.spotify.com/embed/playlist/0rWuTDdbPblptuOjwoSWsv?utm_source=generator',
+      'https://open.spotify.com/embed/playlist/1JqJklB5YRMRFjMTghgXfY?utm_source=generator',
+      'https://open.spotify.com/embed/playlist/37i9dQZF1DWZ7VnoXD1s7S?utm_source=generator',
+      'https://open.spotify.com/embed/playlist/0fPrHfvzDHgVCbysdPJzcN?utm_source=generator',
+      'https://open.spotify.com/embed/playlist/0Q13DdQyb26BUxufuE8fTy?utm_source=generator',
+      'https://open.spotify.com/embed/playlist/37i9dQZF1DX7XEgl7z0Lyy?utm_source=generator',
+      'https://open.spotify.com/embed/playlist/5BXlbneS3OxngEWNfh5ZyU?utm_source=generator'
+    ];
+
+    const dayOfMonth = new Date().getDate();
+    const playlistIndex = dayOfMonth % spotifyPlaylists.length;
+    document.getElementById('spotifyIframe').src = spotifyPlaylists[playlistIndex];
+  </script>
+
+<script>
+    // Function to update the countdown timer
+    function updateCountdown() {
+      const now = new Date();
+      const nextDay = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1); // Midnight of the next day
+      const timeRemaining = nextDay - now;
+
+      const hours = String(Math.floor((timeRemaining / (1000 * 60 * 60)) % 24)).padStart(2, '0');
+      const minutes = String(Math.floor((timeRemaining / (1000 * 60)) % 60)).padStart(2, '0');
+      const seconds = String(Math.floor((timeRemaining / 1000) % 60)).padStart(2, '0');
+
+      document.getElementById('countdown').textContent = `Time until next day: ${hours}:${minutes}:${seconds}`;
+    }
+
+    // Update the countdown every second
+    setInterval(updateCountdown, 1000);
+</script>
+</body>
+</html>
