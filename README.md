@@ -1,3 +1,1 @@
-## THIS HAS LITERALLY ALL CHANGED
-
-using it as a notes hub rn idk
+theres nothing here i fear
