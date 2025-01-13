@@ -9,14 +9,10 @@
         body {
             display: flex;
             flex-direction: column;
-            /* stack everything vertically */
             align-items: center;
-            /* center the content */
             margin: 0;
-            /* reset margin */
             padding: 0;
             width: 100%;
-            /* make body full width */
             font-family: Consolas;
             text-align: center;
         }
@@ -26,13 +22,9 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            /* center content vertically */
             text-align: center;
-            /* center-align text */
             height: 70vh;
-            /* make it take most of the viewport */
             gap: 20px;
-            /* space between items */
         }
 
         .socials {
@@ -74,46 +66,33 @@
             flex-direction: column;
             align-items: center;
             width: 100%;
-            /* full width for the section */
             margin-top: 20px;
-            /* space below the centered content */
         }
 
         .row {
             display: flex;
             justify-content: space-between;
             gap: 15px;
-            /* Reduce space between columns */
             max-width: 900px;
-            /* Restrict row width for better alignment */
             margin-bottom: 15px;
-            /* Reduce space between rows */
         }
 
         .column {
             flex: 1;
-            /* Make all columns equal width */
             max-width: calc(100% / 3 - 15px);
-            /* Ensure 3 columns fit neatly in a row */
         }
 
         .column img {
             width: 100%;
-            /* Make image fill the width of its container */
             aspect-ratio: 1 / 1;
-            /* Ensures a perfect square */
             object-fit: cover;
-            /* Crop the image to fit within the square */
             cursor: pointer;
-            /* Makes it clickable */
             border-radius: 5px;
-            /* Optional: Add rounded corners */
             transition: transform 0.2s ease-in-out;
         }
 
         .column img:hover {
             transform: scale(1.05);
-            /* Slight zoom-in effect on hover */
         }
     </style>
 </head>
