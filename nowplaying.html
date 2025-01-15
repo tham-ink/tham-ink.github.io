@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Now Playing</title>
+    <title>nothing playing</title> <!-- Initial title -->
     <style>
         /* Reset default margins and paddings */
         * {
@@ -80,14 +80,22 @@
             color: #1db954; /* Spotify green */
         }
 
+        /* Progress Section Wrapper */
+        .progress-section {
+            width: 50%; /* Set to 50% of parent */
+            margin: 8px auto 0 auto; /* Center horizontally */
+            text-align: center; /* Center text if needed */
+        }
+
         /* Progress Bar Container */
         .progress-container {
-            width: 50%;
+            position: relative; /* Establish positioning context */
+            width: 100%; /* 100% of progress-section */
             background-color: #333;
             border-radius: 5px; /* Reduced border radius */
             overflow: hidden;
-            height: 4px; /* Further reduced height */
-            margin-top: 8px; /* Slightly reduced margin */
+            height: 4px; /* Reduced height */
+            margin-top: 0; /* Adjusted within progress-section */
         }
 
         /* Progress Bar */
@@ -98,11 +106,33 @@
             transition: width 0.5s linear; /* Faster transition */
         }
 
-        /* Time Information */
+        /* Progress Timestamp Overlay */
+        .progress-timestamp {
+            position: absolute;
+            top: -20px; /* Position above the progress bar */
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 9px;
+            color: #aaa;
+            pointer-events: none; /* Allow clicks to pass through */
+        }
+
+        /* Time Information (if not overlaying) */
+        
         .time-info {
             display: flex;
             justify-content: space-between;
-            width: 50%;
+            width: 50%; /* Match the progress bar width */
+            font-size: 9px; /* Further reduced font size */
+            color: #aaa;
+            margin: 4px auto 0 auto; /* Center horizontally */
+        }
+        
+        /* If using overlay timestamps, comment out the above and use the following */
+        .progress-section .time-info {
+            display: flex;
+            justify-content: space-between;
+            width: 100%; /* 100% of progress-section */
             font-size: 9px; /* Further reduced font size */
             color: #aaa;
             margin-top: 4px; /* Slightly reduced margin */
@@ -219,7 +249,11 @@
                 margin-top: 5px;
             }
 
-            .time-info {
+            .progress-section {
+                width: 80%; /* Adjust for smaller screens */
+            }
+
+            .progress-section .time-info {
                 font-size: 10px;
             }
         }
@@ -237,14 +271,20 @@
                     <p id="album-name">Album</p>
                     <p id="playlist-name" class="playlist"></p>
                     
-                    <!-- Progress Bar Container -->
-                    <div class="progress-container">
-                        <div class="progress-bar" id="progress-bar"></div>
-                    </div>
-                    
-                    <!-- Time Information -->
-                    <div class="time-info">
-                        <span id="elapsed-time">0:00</span> / <span id="total-duration">0:00</span>
+                    <!-- Progress Section Wrapper -->
+                    <div class="progress-section">
+                        <!-- Progress Bar Container -->
+                        <div class="progress-container">
+                            <div class="progress-bar" id="progress-bar"></div>
+                            <!-- Overlay Timestamp -->
+                            <div class="progress-timestamp">
+                                <span id="elapsed-time">0:00</span> / <span id="total-duration">0:00</span>
+                            </div>
+                        </div>
+                        <!-- Time Information (if not overlaying) -->
+                        <div class="time-info">
+                            <span id="elapsed-time">0:00</span> / <span id="total-duration">0:00</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -291,12 +331,17 @@
                             // If it's a new song, reset the timer without overriding currentProgress
                             resetTimer();
                         }
+                    } else {
+                        // No song is currently playing
+                        updateNowPlaying(null);
                     }
                 } else {
                     console.error("Failed to fetch now playing data.");
+                    updateNowPlaying(null);
                 }
             } catch (error) {
                 console.error("Error fetching now playing data:", error);
+                updateNowPlaying(null);
             } finally {
                 isFetching = false;
             }
@@ -304,7 +349,19 @@
 
         // Update Now Playing Section
         const updateNowPlaying = (song) => {
-            if (!song || !song.song) return;
+            if (!song || !song.song) {
+                // If no song is playing, set a default title
+                document.title = "Now Playing";
+                // Optionally, you can also clear or set default values for other elements
+                document.getElementById("song-name").textContent = "No song playing";
+                document.getElementById("artist-name").textContent = "";
+                document.getElementById("album-name").textContent = "";
+                document.getElementById("album-art").src = "album.png";
+                document.getElementById("elapsed-time").textContent = "0:00";
+                document.getElementById("total-duration").textContent = "0:00";
+                document.getElementById("progress-bar").style.width = `0%`;
+                return;
+            }
 
             // Update song details
             document.getElementById("song-name").textContent = song.song;
@@ -319,6 +376,9 @@
             } else {
                 playlistElement.textContent = "";
             }
+
+            // Update webpage title to the song's name in lowercase
+            document.title = song.song.toLowerCase();
 
             // Update timer and progress bar
             currentProgress = parseTime(song.progress);
@@ -369,12 +429,14 @@
         const updateProgressBar = () => {
             const progressPercent = currentDuration ? (currentProgress / currentDuration) * 100 : 0;
             console.log(`Progress Percent: ${progressPercent}%`); // Debugging
-            document.getElementById("progress-bar").style.width = `${progressPercent}%`;
+            const progressBar = document.getElementById("progress-bar");
+            progressBar.style.width = `${progressPercent}%`;
         };
 
         // Update Time Information
         const updateTimeInfo = () => {
             document.getElementById("elapsed-time").textContent = formatTime(currentProgress);
+            document.getElementById("total-duration").textContent = formatTime(currentDuration);
         };
 
         // Reset the timer (without resetting currentProgress)
