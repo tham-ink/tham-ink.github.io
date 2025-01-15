@@ -106,33 +106,11 @@
             transition: width 0.5s linear; /* Faster transition */
         }
 
-        /* Progress Timestamp Overlay */
-        .progress-timestamp {
-            position: absolute;
-            top: -20px; /* Position above the progress bar */
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 9px;
-            color: #aaa;
-            pointer-events: none; /* Allow clicks to pass through */
-        }
-
-        /* Time Information (if not overlaying) */
-        
+        /* Time Information */
         .time-info {
             display: flex;
             justify-content: space-between;
-            width: 50%; /* Match the progress bar width */
-            font-size: 9px; /* Further reduced font size */
-            color: #aaa;
-            margin: 4px auto 0 auto; /* Center horizontally */
-        }
-        
-        /* If using overlay timestamps, comment out the above and use the following */
-        .progress-section .time-info {
-            display: flex;
-            justify-content: space-between;
-            width: 100%; /* 100% of progress-section */
+            width: 100%; /* Match the progress section width */
             font-size: 9px; /* Further reduced font size */
             color: #aaa;
             margin-top: 4px; /* Slightly reduced margin */
@@ -276,12 +254,9 @@
                         <!-- Progress Bar Container -->
                         <div class="progress-container">
                             <div class="progress-bar" id="progress-bar"></div>
-                            <!-- Overlay Timestamp -->
-                            <div class="progress-timestamp">
-                                <span id="elapsed-time">0:00</span> / <span id="total-duration">0:00</span>
-                            </div>
+                            <!-- Removed the "progress-timestamp" div -->
                         </div>
-                        <!-- Time Information (if not overlaying) -->
+                        <!-- Time Information -->
                         <div class="time-info">
                             <span id="elapsed-time">0:00</span> / <span id="total-duration">0:00</span>
                         </div>
