@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Now Playing</title>
+    <style>
+        /* Reset default margins and paddings */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body Styles */
+        body {
+            display: flex;
+            flex-direction: column; /* Stack elements vertically */
+            min-height: 100vh;       /* Full viewport height */
+            font-family: Menlo, Consolas, monospace;
+            color: #fff;
+            background-color: #121212;
+        }
+
+        /* Content Container */
+        .content-wrapper {
+            flex: 1; /* Take up available space */
+            display: flex;
+            justify-content: center; /* Center horizontally */
+            align-items: center;     /* Center vertically */
+            padding: 20px;
+        }
+
+        .content {
+            display: flex;
+            justify-content: center;
+            align-items: center; /* Vertically center left and right sections */
+            gap: 20px; /* Space between sections */
+            width: 100%;
+            max-width: 1200px; /* Prevent it from being too wide */
+            /* Removed background-color, border-radius, box-shadow */
+        }
+
+        /* Left Section */
+        .left-section {
+            flex: 1 1 50%;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            /* Removed background-color, border-radius, box-shadow */
+        }
+
+        .album-art {
+            width: 300px;
+            height: 300px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            object-fit: cover;
+        }
+
+        .song-details {
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center text horizontally */
+        }
+
+        .song-details h2,
+        .song-details h3,
+        .song-details p {
+            margin: 5px 0;
+        }
+
+        .playlist {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #1db954; /* Spotify green */
+        }
+
+        .timer {
+            margin-top: 10px;
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        /* Right Section */
+        .right-section {
+            flex: 1 1 40%;
+            padding: 20px;
+            /* Removed background-color, border-radius, box-shadow */
+            max-height: 450px;
+            overflow-y: auto;
+            width: 100%; /* Ensure it takes full width on smaller screens */
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Vertically center content */
+        }
+
+        .right-section h3 {
+            margin-bottom: 10px;
+            font-size: 18px;
+            text-align: center; /* Center the heading */
+        }
+
+        .recent-tracks {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .recent-tracks li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid #333;
+        }
+
+        .recent-tracks li:last-child {
+            border-bottom: none;
+        }
+
+        .recent-tracks img {
+            width: 50px;
+            height: 50px;
+            border-radius: 5px;
+            object-fit: cover;
+        }
+
+        .recent-tracks .track-info { /* Ensure class name matches */
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start; /* Align text to the start */
+        }
+
+        .recent-tracks .track-info strong {
+            font-size: 16px;
+            color: #fff;
+        }
+
+        .recent-tracks .track-info span {
+            font-size: 14px;
+            color: #bbb;
+        }
+
+        .recent-tracks a {
+            font-size: 14px;
+            color: #1db954; /* Spotify green */
+            text-decoration: none;
+        }
+
+        /* Footer Styles */
+        footer {
+            width: 100%;
+            text-align: left; /* Left-align the footer text */
+            padding: 10px 20px; /* Add horizontal padding */
+            color: #dadada;
+            /* Removed background-color, border-radius, box-shadow */
+        }
+
+        footer a {
+            color: #dadada;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            color: #1db954;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .content {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .left-section,
+            .right-section {
+                width: 100%;
+            }
+
+            .album-art {
+                width: 200px;
+                height: 200px;
+            }
+
+            .recent-tracks li {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .recent-tracks a {
+                margin-top: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="content-wrapper">
+        <div class="content">
+            <!-- Left Section -->
+            <div class="left-section">
+                <img src="album.png" alt="Album Art" class="album-art" id="album-art">
+                <div class="song-details">
+                    <h2 id="song-name">Song Name</h2>
+                    <h3 id="artist-name">Artist</h3>
+                    <p id="album-name">Album</p>
+                    <p id="playlist-name" class="playlist"></p>
+                    <p id="timer" class="timer">Listening time: 0:00</p>
+                </div>
+            </div>
+
+            <!-- Right Section -->
+            <div class="right-section">
+                <h3>Recently Played</h3>
+                <ul id="recent-tracks" class="recent-tracks"></ul>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p><a href="https://tham.ink">tham.ink</a> © 2025</p>
+    </footer>
+
+    <script>
+        const apiUrl = "https://spotify-now-playing-ten-indol.vercel.app/now-playing";
+
+        let currentProgress = 0;
+        let currentDuration = 0;
+        let timerInterval;
+        let isFetching = false; // Flag to prevent overlapping fetches
+
+        // Fetch Now Playing Data
+        const fetchNowPlaying = async () => {
+            if (isFetching) return; // Prevent overlapping fetches
+            isFetching = true;
+            try {
+                const response = await fetch(apiUrl);
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.now_playing && data.now_playing.song) {
+                        const isNewSong = data.now_playing.song !== document.getElementById("song-name").textContent;
+                        updateNowPlaying(data.now_playing);
+                        updateRecentTracks(data.recent_tracks);
+                        if (isNewSong) {
+                            // If it's a new song, reset the timer
+                            resetTimer();
+                        }
+                    }
+                } else {
+                    console.error("Failed to fetch now playing data.");
+                }
+            } catch (error) {
+                console.error("Error fetching now playing data:", error);
+            } finally {
+                isFetching = false;
+            }
+        };
+
+        // Update Now Playing Section
+        const updateNowPlaying = (song) => {
+            if (!song || !song.song) return;
+
+            // Update song details
+            document.getElementById("song-name").textContent = song.song;
+            document.getElementById("artist-name").textContent = song.artist;
+            document.getElementById("album-name").textContent = song.album;
+            document.getElementById("album-art").src = song.album_cover || "album.png";
+
+            // Update playlist info
+            const playlistElement = document.getElementById("playlist-name");
+            if (song.playlist && song.playlist.name) {
+                playlistElement.innerHTML = `Listening to: <a href="${song.playlist.link}" target="_blank">${song.playlist.name}</a>`;
+            } else {
+                playlistElement.textContent = "";
+            }
+
+            // Update timer
+            currentProgress = parseTime(song.progress);
+            currentDuration = parseTime(song.duration);
+            startTimer();
+        };
+
+        // Parse time in "MM:SS" format to seconds
+        const parseTime = (time) => {
+            if (!time) return 0;
+            const [minutes, seconds] = time.split(":").map(Number);
+            return (minutes || 0) * 60 + (seconds || 0);
+        };
+
+        // Start the timer
+        const startTimer = () => {
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                currentProgress++;
+                updateTimerDisplay();
+
+                // Refresh when song ends
+                if (currentProgress >= currentDuration) {
+                    fetchNowPlaying();
+                }
+            }, 1000);
+        };
+
+        // Update timer display
+        const updateTimerDisplay = () => {
+            const minutes = Math.floor(currentProgress / 60);
+            const seconds = currentProgress % 60;
+            document.getElementById("timer").textContent = `Listening time: ${minutes}:${String(seconds).padStart(2, "0")}`;
+        };
+
+        // Reset the timer
+        const resetTimer = () => {
+            clearInterval(timerInterval);
+            document.getElementById("timer").textContent = "Listening time: 0:00";
+            currentProgress = 0;
+            // Restart the timer for the new song
+            startTimer();
+        };
+
+        // Update Recent Tracks Section
+        const updateRecentTracks = (tracks) => {
+            const recentTracksList = document.getElementById("recent-tracks");
+            recentTracksList.innerHTML = ""; // Clear the list
+
+            tracks.forEach(track => {
+                const li = document.createElement("li");
+                li.innerHTML = `
+                    <img src="${track.album_cover}" alt="Album cover">
+                    <div class="track-info">
+                        <strong>${track.song}</strong>
+                        <span>${track.artist}</span>
+                    </div>
+                    <a href="${track.link}" target="_blank">Listen</a>
+                `;
+                recentTracksList.appendChild(li);
+            });
+        };
+
+        // Refresh every 20 seconds
+        setInterval(fetchNowPlaying, 20000);
+        fetchNowPlaying();
+    </script>
+</body>
+</html>
