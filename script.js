@@ -9,36 +9,31 @@ document.querySelectorAll(".column img").forEach((img) => {
         popup.style.height = "100vh";
         popup.style.backgroundColor = "rgba(0, 0, 0, 0.8)";
         popup.style.display = "flex";
-        popup.style.flexDirection = "column"; // Stack the image and text
+        popup.style.flexDirection = "column";
         popup.style.alignItems = "center";
         popup.style.justifyContent = "center";
         popup.style.zIndex = "9999";
 
-        // Create the full-size image
         const fullImage = document.createElement("img");
-        fullImage.src = img.src; // Use the same image source
+        fullImage.src = img.src;
         fullImage.style.maxWidth = "90vw";
         fullImage.style.maxHeight = "80vh";
         fullImage.style.border = "5px solid white";
         fullImage.style.borderRadius = "10px";
         fullImage.style.objectFit = "contain";
 
-        // Create a caption for the image
         const caption = document.createElement("p");
-        caption.textContent = img.alt || "Image description"; // Use the 'alt' attribute as the caption
+        caption.textContent = img.alt || "Image description";
         caption.style.color = "white";
         caption.style.fontSize = "18px";
         caption.style.marginTop = "10px";
         caption.style.textAlign = "center";
 
-        // Close popup when clicking outside the image or text
         popup.addEventListener("click", () => popup.remove());
 
-        // Add the image and caption to the popup
         popup.appendChild(fullImage);
         popup.appendChild(caption);
 
-        // Add the popup to the body
         document.body.appendChild(popup);
     });
 });

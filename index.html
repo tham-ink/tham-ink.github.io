@@ -84,17 +84,17 @@
 
         .column img {
     width: 100%;
-    aspect-ratio: 1 / 1; /* Maintain square shape */
-    object-fit: cover; /* Crop image while preserving aspect ratio */
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
     cursor: pointer;
     border-radius: 5px;
-    transition: transform 0.2s ease-in-out; /* Smooth hover effect */
-    filter: none; /* Remove grainy effects */
+    transition: transform 0.2s ease-in-out;
+    filter: none;
 }
 
         .column img:hover {
-             transform: scale(1.05); /* Slight zoom-in effect on hover */
-            filter: none; /* Ensure no filters are applied on hover */
+             transform: scale(1.05);
+            filter: none;
 }
     </style>
 </head>
@@ -111,9 +111,14 @@
     <!-- section below -->
     <section class="three-columns">
         <div class="row">
-            <div class="column"><img src="portfolio/1.jpg" alt="15mm, 1/100, f3.5, iso8000" loading="lazy"></div>
+            <div class="column"><img src="portfolio/6.jpg" alt="45mm, 1/80, f6.3, iso640" loading="lazy"></div>
+            <div class="column"><img src="portfolio/5.jpg" alt="45mm, 1/320, f6.3, iso400" loading="lazy"></div>
+            <div class="column"><img src="portfolio/4.jpg" alt="16mm, 1/200, f3.5, iso100" loading="lazy"></div>
+        </div>
+        <div class="row">
+            <div class="column"><img src="portfolio/3.jpg" alt="45mm, 1/100, f3.5, iso8000" loading="lazy"></div>
             <div class="column"><img src="portfolio/2.jpg" alt="15mm, 1/100, f3.5, iso8000" loading="lazy"></div>
-            <div class="column"><img src="portfolio/3.jpg" alt="45mm, 1/100, f6.5, iso8000" loading="lazy"></div>
+            <div class="column"><img src="portfolio/1.jpg" alt="15mm, 1/100, f6.5, iso8000" loading="lazy"></div>
         </div>
     </section>
     <script src="script.js"></script>
