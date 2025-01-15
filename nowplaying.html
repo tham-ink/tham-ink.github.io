@@ -65,6 +65,7 @@
             display: flex;
             flex-direction: column;
             align-items: center; /* Center text horizontally */
+            width: 100%;
         }
 
         .song-details h2,
@@ -79,10 +80,32 @@
             color: #1db954; /* Spotify green */
         }
 
-        .timer {
-            margin-top: 10px;
+        /* Progress Bar Container */
+        .progress-container {
+            width: 50%;
+            background-color: #333;
+            border-radius: 5px; /* Reduced border radius */
+            overflow: hidden;
+            height: 4px; /* Further reduced height */
+            margin-top: 8px; /* Slightly reduced margin */
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background-color: #1db954; /* Spotify green */
+            transition: width 0.5s linear; /* Faster transition */
+        }
+
+        /* Time Information */
+        .time-info {
+            display: flex;
+            justify-content: space-between;
+            width: 50%;
+            font-size: 9px; /* Further reduced font size */
             color: #aaa;
-            font-size: 14px;
+            margin-top: 4px; /* Slightly reduced margin */
         }
 
         /* Right Section */
@@ -195,6 +218,10 @@
             .recent-tracks a {
                 margin-top: 5px;
             }
+
+            .time-info {
+                font-size: 10px;
+            }
         }
     </style>
 </head>
@@ -209,7 +236,16 @@
                     <h3 id="artist-name">Artist</h3>
                     <p id="album-name">Album</p>
                     <p id="playlist-name" class="playlist"></p>
-                    <p id="timer" class="timer">Listening time: 0:00</p>
+                    
+                    <!-- Progress Bar Container -->
+                    <div class="progress-container">
+                        <div class="progress-bar" id="progress-bar"></div>
+                    </div>
+                    
+                    <!-- Time Information -->
+                    <div class="time-info">
+                        <span id="elapsed-time">0:00</span> / <span id="total-duration">0:00</span>
+                    </div>
                 </div>
             </div>
 
@@ -241,12 +277,18 @@
                 const response = await fetch(apiUrl);
                 if (response.ok) {
                     const data = await response.json();
+                    console.log("Fetched Data:", data); // Debugging
                     if (data.now_playing && data.now_playing.song) {
-                        const isNewSong = data.now_playing.song !== document.getElementById("song-name").textContent;
+                        const currentSongName = document.getElementById("song-name").textContent.trim();
+                        const currentArtistName = document.getElementById("artist-name").textContent.trim();
+                        const newSongName = data.now_playing.song.trim();
+                        const newArtistName = data.now_playing.artist.trim();
+                        const isNewSong = newSongName !== currentSongName || newArtistName !== currentArtistName;
+                        console.log(`Is New Song: ${isNewSong}`); // Debugging
                         updateNowPlaying(data.now_playing);
                         updateRecentTracks(data.recent_tracks);
                         if (isNewSong) {
-                            // If it's a new song, reset the timer
+                            // If it's a new song, reset the timer without overriding currentProgress
                             resetTimer();
                         }
                     }
@@ -278,9 +320,16 @@
                 playlistElement.textContent = "";
             }
 
-            // Update timer
+            // Update timer and progress bar
             currentProgress = parseTime(song.progress);
             currentDuration = parseTime(song.duration);
+            console.log(`Current Progress (seconds): ${currentProgress}`); // Debugging
+            console.log(`Current Duration (seconds): ${currentDuration}`); // Debugging
+            document.getElementById("elapsed-time").textContent = formatTime(currentProgress);
+            document.getElementById("total-duration").textContent = formatTime(currentDuration);
+            updateProgressBar();
+            updateTimeInfo(); // Update elapsed time display
+            // Start the timer (will clear any existing timer)
             startTimer();
         };
 
@@ -288,36 +337,51 @@
         const parseTime = (time) => {
             if (!time) return 0;
             const [minutes, seconds] = time.split(":").map(Number);
-            return (minutes || 0) * 60 + (seconds || 0);
+            const totalSeconds = (minutes || 0) * 60 + (seconds || 0);
+            console.log(`Parsed Time - Minutes: ${minutes}, Seconds: ${seconds}, Total Seconds: ${totalSeconds}`); // Debugging
+            return totalSeconds;
+        };
+
+        // Format seconds to "M:SS" format
+        const formatTime = (seconds) => {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins}:${String(secs).padStart(2, "0")}`;
         };
 
         // Start the timer
         const startTimer = () => {
-            clearInterval(timerInterval);
+            clearInterval(timerInterval); // Clear any existing timer
             timerInterval = setInterval(() => {
                 currentProgress++;
-                updateTimerDisplay();
-
-                // Refresh when song ends
                 if (currentProgress >= currentDuration) {
+                    // Song ended, fetch new data
+                    clearInterval(timerInterval);
                     fetchNowPlaying();
+                    return;
                 }
+                updateProgressBar();
+                updateTimeInfo();
             }, 1000);
         };
 
-        // Update timer display
-        const updateTimerDisplay = () => {
-            const minutes = Math.floor(currentProgress / 60);
-            const seconds = currentProgress % 60;
-            document.getElementById("timer").textContent = `Listening time: ${minutes}:${String(seconds).padStart(2, "0")}`;
+        // Update Progress Bar
+        const updateProgressBar = () => {
+            const progressPercent = currentDuration ? (currentProgress / currentDuration) * 100 : 0;
+            console.log(`Progress Percent: ${progressPercent}%`); // Debugging
+            document.getElementById("progress-bar").style.width = `${progressPercent}%`;
         };
 
-        // Reset the timer
+        // Update Time Information
+        const updateTimeInfo = () => {
+            document.getElementById("elapsed-time").textContent = formatTime(currentProgress);
+        };
+
+        // Reset the timer (without resetting currentProgress)
         const resetTimer = () => {
             clearInterval(timerInterval);
-            document.getElementById("timer").textContent = "Listening time: 0:00";
-            currentProgress = 0;
-            // Restart the timer for the new song
+            updateProgressBar();
+            updateTimeInfo();
             startTimer();
         };
 
@@ -340,7 +404,7 @@
             });
         };
 
-        // Refresh every 20 seconds
+        // Initial fetch and set interval to refresh every 20 seconds
         setInterval(fetchNowPlaying, 20000);
         fetchNowPlaying();
     </script>
