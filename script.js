@@ -1,4 +1,4 @@
-document.querySelectorAll(".column img").forEach((img) => {
+document.querySelectorAll(".photo-grid img").forEach((img) => {
     img.addEventListener("click", () => {
         // Create the popup container
         const popup = document.createElement("div");

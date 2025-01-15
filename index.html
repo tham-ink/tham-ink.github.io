@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>tham.ink</title>
     <style>
+        /* website design shit */
         body {
             display: flex;
             flex-direction: column;
@@ -13,41 +13,45 @@
             margin: 0;
             padding: 0;
             width: 100%;
-            font-family: Consolas;
+            font-family: Menlo, Consolas, monospace;
+            ;
             text-align: center;
         }
 
-        .content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            height: 70vh;
-            gap: 20px;
+        .photodump {
+            font-size: 22px;
+            font-style: bold;
+            padding: 0px;
         }
 
-        .socials {
-            display: flex;
-            flex-direction: row;
-        }
-
-        img {
-            max-width: 100%;
-            height: auto;
+        .subtitle {
+            font-size: 10px;
+            font-style: italic;
+            color: #dadada;
         }
 
         footer {
-            background-color: rgba(255, 255, 255, 100);
+            background-color: rgba(255, 255, 255, 0);
             color: #dadada;
-            text-align: center;
+            text-align: left;
             padding: 10px;
             position: fixed;
             bottom: 0;
             width: 100%;
+            display: flex;
+            justify-content: flex-start;
+            box-sizing: border-box;
+            margin: 0;
         }
 
         .footertext {
+            margin: 0;
+            padding: 0;
+            color: #dadada;
+            text-decoration: none;
+        }
+
+        .footertext:hover {
             color: #dadada;
         }
 
@@ -61,41 +65,83 @@
             color: rgba(160, 50, 0, 100)
         }
 
-        .three-columns {
+        .content {
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 100%;
-            margin-top: 20px;
+            justify-content: center;
+            text-align: center;
+            height: 95vh;
         }
 
-        .row {
+        .socials {
             display: flex;
-            justify-content: space-between;
-            gap: 15px;
-            max-width: 900px;
-            margin-bottom: 15px;
+            flex-direction: row;
         }
 
-        .column {
-            flex: 1;
-            max-width: calc(100% / 3 - 15px);
+        img {
+            max-width: 100%;
+            height: auto;
         }
 
-        .column img {
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    object-fit: cover;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: transform 0.2s ease-in-out;
-    filter: none;
-}
+        footer {
+            background-color: rgba(255, 255, 255, 0);
+            color: #dadada;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
 
-        .column img:hover {
-             transform: scale(1.05);
-            filter: none;
-}
+        /* photo grid config 
+            thanks gpt :pray: */
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            /* Create exactly 3 equal-width columns */
+            gap: 20px;
+            /* Space between images */
+            padding: 10px;
+            /* Optional: Add padding around the grid */
+        }
+
+        .photo-grid img {
+            width: 100%;
+            /* Ensure images fill the grid cells */
+            aspect-ratio: 1 / 1;
+            /* Maintain square aspect ratio */
+            object-fit: cover;
+            /* Crop images to fit within their cells */
+            border-radius: 5px;
+            /* Optional: Rounded corners */
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .photo-grid img:hover {
+            transform: scale(1.05);
+            /* Slight zoom on hover */
+        }
+
+        @media (max-width: 768px) {
+            .photo-grid {
+                grid-template-columns: repeat(2, 1fr);
+                /* Switch to 2 columns on medium screens */
+                gap: 10px;
+                /* Smaller gap for medium screens */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .photo-grid {
+                grid-template-columns: 1fr;
+                /* 1 column on small (phone) screens */
+                gap: 5px;
+                /* Minimal gap for small screens */
+            }
+        }
     </style>
 </head>
 
@@ -108,23 +154,22 @@
         </div>
     </div>
 
-    <!-- section below -->
-    <section class="three-columns">
-        <div class="row">
-            <div class="column"><img src="portfolio/6.jpg" alt="45mm, 1/80, f6.3, iso640" loading="lazy"></div>
-            <div class="column"><img src="portfolio/5.jpg" alt="45mm, 1/320, f6.3, iso400" loading="lazy"></div>
-            <div class="column"><img src="portfolio/4.jpg" alt="16mm, 1/200, f3.5, iso100" loading="lazy"></div>
-        </div>
-        <div class="row">
-            <div class="column"><img src="portfolio/3.jpg" alt="45mm, 1/100, f3.5, iso8000" loading="lazy"></div>
-            <div class="column"><img src="portfolio/2.jpg" alt="15mm, 1/100, f3.5, iso8000" loading="lazy"></div>
-            <div class="column"><img src="portfolio/1.jpg" alt="15mm, 1/100, f6.5, iso8000" loading="lazy"></div>
-        </div>
+    <p class="photodump">photo dump ↓</p>
+    <p class="subtitle">all images r small jpg, 70% quality</p>
+    <section class="photo-grid">
+        <img src="portfolio/IMG_1035.jpg" alt="16mm, 1/200, f3.5, iso100 (jan14/25)" loading="lazy">
+        <img src="portfolio/IMG_1029.jpg" alt="45mm, 1/320, f6.3, iso400 (jan14/25)" loading="lazy">
+        <img src="portfolio/IMG_1022.jpg" alt="15mm, 1/800, f5.6, iso400 (jan14/25)" loading="lazy">
+        <img src="portfolio/IMG_1019.jpg" alt="45mm, 1/80, f6.3, iso640 (jan14/25)" loading="lazy">
+        <img src="portfolio/IMG_0891.jpg" alt="45mm, 1/80, f13, iso6400 (jan14/25)" loading="lazy">
+        <img src="portfolio/IMG_0782.jpg" alt="15mm, 1/100, f6.5, iso8000 (nov22/24)" loading="lazy">
+        <img src="portfolio/IMG_0760.jpg" alt="45mm, 1/100, f3.5, iso8000 (nov22/24)" loading="lazy">
+        <img src="portfolio/IMG_0746.jpg" alt="15mm, 1/100, f3.5, iso8000 (nov22/24)" loading="lazy">
     </section>
+    <br><br>
     <script src="script.js"></script>
 </body>
 <footer>
-    <a href='https://tham.ink' class='footertext'>tham.ink</a> © 2025
+    <p class="footertext"><a href='https://tham.ink' class='footertext'>tham.ink</a> © 2025</p>
 </footer>
-
 </html>
