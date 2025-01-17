@@ -335,7 +335,7 @@
         const updateNowPlaying = (song) => {
             if (!song || !song.song) {
                 // If no song is playing, set a default title
-                document.title = "Now Playing";
+                document.title = "nothings playing";
                 // Optionally, you can also clear or set default values for other elements
                 document.getElementById("song-name").textContent = "No song playing";
                 document.getElementById("artist-name").textContent = "";
@@ -451,7 +451,7 @@
         };
 
         // Initial fetch and set interval to refresh every 20 seconds
-        setInterval(fetchNowPlaying, 20000);
+        setInterval(fetchNowPlaying, 5000);
         fetchNowPlaying();
     </script>
 </body>
