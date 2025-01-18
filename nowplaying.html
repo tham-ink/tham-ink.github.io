@@ -286,50 +286,78 @@
     </footer>
 
     <script>
-        const apiUrl = "https://spotify-now-playing-ten-indol.vercel.app/now-playing";
+    const apiUrl = "https://spotify-now-playing-ten-indol.vercel.app/now-playing";
 
-        let currentProgress = 0;
-        let currentDuration = 0;
-        let timerInterval;
-        let isFetching = false; // Flag to prevent overlapping fetches
+    let currentProgress = 0;
+    let currentDuration = 0;
+    let timerInterval;
+    let isFetching = false;
 
-        // Fetch Now Playing Data
-        const fetchNowPlaying = async () => {
-            if (isFetching) return; // Prevent overlapping fetches
-            isFetching = true;
-            try {
-                const response = await fetch(apiUrl);
-                if (response.ok) {
-                    const data = await response.json();
-                    console.log("Fetched Data:", data); // Debugging
-                    if (data.now_playing && data.now_playing.song) {
-                        const currentSongName = document.getElementById("song-name").textContent.trim();
-                        const currentArtistName = document.getElementById("artist-name").textContent.trim();
-                        const newSongName = data.now_playing.song.trim();
-                        const newArtistName = data.now_playing.artist.trim();
-                        const isNewSong = newSongName !== currentSongName || newArtistName !== currentArtistName;
-                        console.log(`Is New Song: ${isNewSong}`); // Debugging
-                        updateNowPlaying(data.now_playing);
-                        updateRecentTracks(data.recent_tracks);
-                        if (isNewSong) {
-                            // If it's a new song, reset the timer without overriding currentProgress
-                            resetTimer();
-                        }
-                    } else {
-                        // No song is currently playing
-                        updateNowPlaying(null);
+    // Fetch Now Playing Data
+    const fetchNowPlaying = async () => {
+        if (isFetching) return;
+        isFetching = true;
+        try {
+            const response = await fetch(apiUrl);
+            if (response.ok) {
+                const data = await response.json();
+                console.log("Fetched Data:", data);
+
+                // Always update recent tracks whether there's a song or not
+                updateRecentTracks(data.recent_tracks);
+
+                // If there *is* a song playing
+                if (data.now_playing && data.now_playing.song) {
+                    const currentSongName = document.getElementById("song-name").textContent.trim();
+                    const currentArtistName = document.getElementById("artist-name").textContent.trim();
+                    const newSongName = data.now_playing.song.trim();
+                    const newArtistName = data.now_playing.artist.trim();
+                    const isNewSong = newSongName !== currentSongName || newArtistName !== currentArtistName;
+
+                    console.log(`Is New Song: ${isNewSong}`);
+                    updateNowPlaying(data.now_playing);
+
+                    if (isNewSong) {
+                        // If it's a new song, reset the timer
+                        resetTimer();
                     }
                 } else {
-                    console.error("Failed to fetch now playing data.");
+                    // No song playing
                     updateNowPlaying(null);
                 }
-            } catch (error) {
-                console.error("Error fetching now playing data:", error);
+
+            } else {
+                console.error("Failed to fetch now playing data.");
                 updateNowPlaying(null);
-            } finally {
-                isFetching = false;
             }
-        };
+        } catch (error) {
+            console.error("Error fetching now playing data:", error);
+            updateNowPlaying(null);
+        } finally {
+            isFetching = false;
+        }
+    };
+
+    // Update Recent Tracks
+    const updateRecentTracks = (tracks) => {
+        const recentTracksList = document.getElementById("recent-tracks");
+        recentTracksList.innerHTML = "";
+        if (!tracks) return; // Just in case
+
+        tracks.forEach(track => {
+            const li = document.createElement("li");
+            li.innerHTML = `
+                <img src="${track.album_cover}" alt="Album cover">
+                <div class="track-info">
+                    <strong>${track.song}</strong>
+                    <span>${track.artist}</span>
+                </div>
+                <a href="${track.link}" target="_blank">Listen</a>
+            `;
+            recentTracksList.appendChild(li);
+        });
+    };
+
 
         // Update Now Playing Section
         const updateNowPlaying = (song) => {
@@ -429,25 +457,6 @@
             updateProgressBar();
             updateTimeInfo();
             startTimer();
-        };
-
-        // Update Recent Tracks Section
-        const updateRecentTracks = (tracks) => {
-            const recentTracksList = document.getElementById("recent-tracks");
-            recentTracksList.innerHTML = ""; // Clear the list
-
-            tracks.forEach(track => {
-                const li = document.createElement("li");
-                li.innerHTML = `
-                    <img src="${track.album_cover}" alt="Album cover">
-                    <div class="track-info">
-                        <strong>${track.song}</strong>
-                        <span>${track.artist}</span>
-                    </div>
-                    <a href="${track.link}" target="_blank">Listen</a>
-                `;
-                recentTracksList.appendChild(li);
-            });
         };
 
         // Initial fetch and set interval to refresh every 20 seconds
