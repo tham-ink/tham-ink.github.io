@@ -2,7 +2,6 @@
 body {
     display: flex;
     flex-direction: column;
-    align-items: center;
     margin: 0;
     padding: 0;
     width: 100%;
@@ -20,6 +19,10 @@ body {
     font-size: 10px;
     font-style: italic;
     color: #dadada;
+  }
+
+  .abtme {
+    text-align: left;
   }
   
   footer {
