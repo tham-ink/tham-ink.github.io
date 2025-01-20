@@ -14,23 +14,23 @@
       flex-direction: column;
       height: 100vh;
       margin: 0;
-      background-color: #ffffff;
+      background-color: #1A1B1B;
     }
 
     #clock {
-      font-family: 'Source Serif Pro', serif;
+      font-family: Menlo, Consolas, monospace;
       font-size: 2em;
       font-weight: 700;
-      color: #333;
+      color: #ffffff;
       display: flex;
       margin-bottom: 10px; /* Add some margin between clock and greeting */
     }
 
     #greeting {
-      font-family: 'Source Serif Pro', serif;
+      font-family: Menlo, Consolas, monospace;
       font-weight: 400;
       font-size: 1.5em;
-      color: #555;
+      color: #c9c9c9;
     }
 
     .digit, .colon {
@@ -120,18 +120,21 @@
 
 
       if (hour === 0 && minutes === 0 && seconds === 0) {
-        document.getElementById('greeting').textContent = 'loading.';
-      } else if (hour < 4) {
-        document.getElementById('greeting').textContent = 'might be time for bed man';
-      } else if (hour < 8) {
-        document.getElementById('greeting').textContent = 'wakey wakey';
-      } else if (hour < 12) {
-        document.getElementById('greeting').textContent = 'im gonna kms i stg';
-      } else if (hour < 18) {
-        document.getElementById('greeting').textContent = 'its almost over i swear';
-      } else {
-        document.getElementById('greeting').textContent = "WE ARE SO FUCKING UP";
-      }
+  document.getElementById('greeting').textContent = 'loading.';
+} else if (hour >= 21 || hour < 5) {
+  document.getElementById('greeting').textContent = 'u should go the fuck to sleep';
+} else if (hour < 9) {
+  document.getElementById('greeting').textContent = 'wake the fuck up bitch boy';
+} else if (hour < 12) {
+  document.getElementById('greeting').textContent = 'we locked in fr';
+} else if (hour < 16) {
+  document.getElementById('greeting').textContent = 'its almost over ong';
+} else if (hour < 21) {
+  document.getElementById('greeting').textContent = 'LETS FUCKING GOOOOOOOOO';
+} else {
+  document.getElementById('greeting').textContent = 'u should go the fuck to sleep';
+}
+
     }
 
     function startClock() {
