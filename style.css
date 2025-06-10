@@ -66,7 +66,7 @@ body {
     align-items: center;
     justify-content: center;
     text-align: center;
-    height: 90vh;
+    height: 95vh;
   }
   
   .socials {
@@ -140,65 +140,3 @@ body {
       /* Minimal gap for small screens */
     }
   }
-  /* rates list styles */
-.rates-list ul {
-  list-style: none; /* removes bullets */
-  padding: 0;       /* removes left indent */
-  margin: 0;        /* removes default margin */
-}
-
-.rates {
-  font-size: 42px;
-}
-
-/* nav styles */
-.nav {
-  display: flex;
-  gap: 20px;
-  padding: 10px;
-}
-
-.nav-link {
-  text-decoration: none;
-  color: grey; /* default grey */
-  font-weight: bold;
-}
-
-.nav-link:hover {
-  color: black; /* turn black on hover */
-}
-
-/* rates list styles */
-.rates-list {
-  max-width: 600px;
-  margin: 40px auto;
-  padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-
-.rates-list h1 {
-  margin-bottom: 20px;
-  font-size: 1.8rem;
-}
-
-.rates-list ul {
-  list-style: none;
-  padding: 0;
-}
-
-.rates-list li {
-  margin-bottom: 20px;
-  padding-bottom: 10px;
-}
-
-.rates-list h2 {
-  margin: 0;
-  font-size: 1.2rem;
-}
-
-.rates-list p {
-  margin: 5px 0 0 0;
-  font-size: 1rem;
-  color: #555;
-}
