@@ -58,6 +58,23 @@ document.addEventListener("DOMContentLoaded", () => {
     expenses = []
   }
 
+  // Add IDs to existing expenses that don't have them
+  let hasChanges = false
+  expenses.forEach(expense => {
+    if (!expense.id) {
+      expense.id = Date.now() + Math.random().toString(36).substr(2, 9)
+      hasChanges = true
+    }
+  })
+  if (hasChanges) {
+    try {
+      localStorage.setItem("expenses", JSON.stringify(expenses))
+      console.log("Added IDs to existing expenses")
+    } catch (err) {
+      console.error("Failed to save updated expenses with IDs:", err)
+    }
+  }
+
   let currentDate = new Date()
   currentDate.setHours(0,0,0,0)
 
@@ -104,9 +121,20 @@ document.addEventListener("DOMContentLoaded", () => {
     const todayTotal = computeTodayTotal()
     const limit = Number(settings.dailyLimit) || 0
     const pct = limit > 0 ? Math.min(100, (todayTotal / limit) * 100) : 0
-    if (progressFill) progressFill.style.width = pct + "%"
+    const overBudgetPct = limit > 0 ? (todayTotal / limit) * 100 : 0
+    
+    if (progressFill) {
+      progressFill.style.width = pct + "%"
+      // Add or remove over-budget class
+      if (overBudgetPct > 100) {
+        progressFill.classList.add('over-budget')
+      } else {
+        progressFill.classList.remove('over-budget')
+      }
+    }
     if (todayAmountEl) todayAmountEl.textContent = `$${todayTotal.toFixed(2)}`
     if (dailyLimitEl) dailyLimitEl.textContent = `$${(limit || 0).toFixed(2)}`
+    
     // update weekly progress (week-to-date)
     try {
       if (weeklyProgressFill && weekToDateEl && weeklyBudgetEl) {
@@ -132,7 +160,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const weeklyBudget = (Number(settings.dailyLimit) || 0) * 7
         const wpct = weeklyBudget > 0 ? Math.min(100, (weekSum / weeklyBudget) * 100) : 0
+        const overWeeklyBudgetPct = weeklyBudget > 0 ? (weekSum / weeklyBudget) * 100 : 0
+        
         weeklyProgressFill.style.width = wpct + "%"
+        // Add or remove over-budget class for weekly progress
+        if (overWeeklyBudgetPct > 100) {
+          weeklyProgressFill.classList.add('over-budget')
+        } else {
+          weeklyProgressFill.classList.remove('over-budget')
+        }
+        
         weekToDateEl.textContent = `$${weekSum.toFixed(2)}`
         weeklyBudgetEl.textContent = `$${weeklyBudget.toFixed(2)}`
       }
@@ -141,10 +178,37 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* screen switching */
   openAdd.addEventListener("click", () => {
-    home.classList.remove("active")
-    add.classList.add("active")
-    currentAmount = ""
-    updateAmount()
+    // Add growing animation
+    openAdd.classList.add('animate')
+    
+    // Create full-screen transition overlay
+    const overlay = document.createElement('div')
+    overlay.className = 'transition-overlay'
+    document.body.appendChild(overlay)
+    
+    // Create ripple effect for additional feedback
+    const ripple = document.createElement('div')
+    ripple.className = 'ripple'
+    document.body.appendChild(ripple)
+    
+    // Navigate to add screen after short delay to let animation start
+    setTimeout(() => {
+      home.classList.remove("active")
+      add.classList.add("active")
+      currentAmount = ""
+      updateAmount()
+    }, 200)
+    
+    // Remove animation elements after animation completes
+    setTimeout(() => {
+      openAdd.classList.remove('animate')
+      if (overlay.parentNode) {
+        overlay.parentNode.removeChild(overlay)
+      }
+      if (ripple.parentNode) {
+        ripple.parentNode.removeChild(ripple)
+      }
+    }, 800)
   })
 
   // open transactions / weekly
@@ -211,6 +275,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const comment = commentInput ? commentInput.value.trim() : ""
 
     expenses.push({
+      id: Date.now() + Math.random().toString(36).substr(2, 9), // unique ID
       amount: num,
       category: categorySelect ? categorySelect.value : "other",
       comment: comment,
@@ -237,6 +302,29 @@ document.addEventListener("DOMContentLoaded", () => {
     try { updateAmount() } catch (err) { }
   })
 
+  // Delete transaction functions
+  function confirmDeleteTransaction(id, amount, category) {
+    if (confirm(`Delete this transaction?\n\n$${Number(amount).toFixed(2)} - ${category}`)) {
+      deleteTransaction(id)
+    }
+  }
+
+  function deleteTransaction(id) {
+    const index = expenses.findIndex(expense => expense.id === id)
+    if (index !== -1) {
+      expenses.splice(index, 1)
+      try {
+        localStorage.setItem("expenses", JSON.stringify(expenses))
+      } catch (err) {
+        console.error("Failed to save expenses after deletion:", err)
+      }
+      // Re-render the transactions list and update other views
+      renderTransactions()
+      updateProgress()
+      renderHome()
+    }
+  }
+
   function renderTransactions() {
     if (!transactionsList) return
     transactionsList.innerHTML = ''
@@ -245,6 +333,7 @@ document.addEventListener("DOMContentLoaded", () => {
     sorted.forEach(e => {
       const row = document.createElement('div')
       row.className = 'transaction'
+      row.dataset.id = e.id // Store the ID for later reference
 
       const rowInner = document.createElement('div')
       rowInner.className = 'row-inner'
@@ -263,9 +352,21 @@ document.addEventListener("DOMContentLoaded", () => {
       amt.className = 'amount'
       amt.textContent = `$${Number(e.amount).toFixed(2)}`
 
+      // Create delete button
+      const actions = document.createElement('div')
+      actions.className = 'actions'
+      const deleteBtn = document.createElement('button')
+      deleteBtn.className = 'delete-btn'
+      deleteBtn.textContent = 'Delete'
+      deleteBtn.addEventListener('click', (event) => {
+        event.stopPropagation() // Prevent row click events
+        confirmDeleteTransaction(e.id, e.amount, e.category)
+      })
+      actions.appendChild(deleteBtn)
+
       rowInner.appendChild(meta)
       rowInner.appendChild(amt)
-
+      rowInner.appendChild(actions)
 
       row.appendChild(rowInner)
       transactionsList.appendChild(row)
