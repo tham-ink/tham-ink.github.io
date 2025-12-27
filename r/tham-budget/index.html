@@ -50,7 +50,7 @@
 
       <!-- category dropdown (placed below comment; styled like the USD pill) -->
       <select id="category" class="category-pill">
-        <option value="food">eating out</option>
+        <option value="eating out">eating out</option>
         <option value="monster energy">monster energy</option>
         <option value="groceries">groceries</option>
         <option value="entertainment">entertainment</option>
@@ -93,17 +93,29 @@
         <button id="next-week">▶</button>
       </div>
     </header>
-      <div class="weekly-progress-container">
-        <div class="progress-label">Week progress</div>
-        <div class="progress">
-          <div class="progress-fill weekly-progress-fill" style="width:0%"></div>
-        </div>
-        <div class="progress-stats"><span class="week-to-date">$0.00</span> / <span class="weekly-budget">$0.00</span></div>
+    
+    <!-- iOS-style weekly overview -->
+    <div class="weekly-overview">
+      <div class="daily-average">
+        <div class="average-amount" id="daily-average-amount">$0.00</div>
+        <div class="average-label">per day</div>
       </div>
-    <section id="weekly-chart" class="weekly-chart"></section>
-    <div class="weekly-summary">
-      <div class="weekly-budget">Weekly budget: <span class="weekly-budget-value">$0.00</span></div>
-      <div id="weekly-categories" class="weekly-categories"></div>
+      <div class="weekly-change">
+        <span class="change-percentage" id="weekly-change-percentage">+0%</span>
+        <span class="change-label">from last week</span>
+      </div>
+    </div>
+
+    <!-- Category spending bars -->
+    <div class="weekly-categories-section">
+      <h3>Spending by Category</h3>
+      <div id="category-bars" class="category-bars"></div>
+    </div>
+
+    <!-- Most used section -->
+    <div class="most-used-section">
+      <h3>Most Used</h3>
+      <div id="most-used" class="most-used-list"></div>
     </div>
   </main>
 

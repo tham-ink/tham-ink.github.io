@@ -42,6 +42,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const weeklyCategoriesEl = document.getElementById("weekly-categories")
   const weeklyBudgetValue = document.querySelector(".weekly-budget-value")
   const viewWeeklyBtn = document.getElementById("view-weekly")
+  
+  // iOS-style weekly elements
+  const dailyAverageAmount = document.getElementById("daily-average-amount")
+  const weeklyChangePercentage = document.getElementById("weekly-change-percentage")
+  const categoryBarsContainer = document.getElementById("category-bars")
+  const mostUsedContainer = document.getElementById("most-used")
 
   // 🔒 force correct start screen (iphone safari fix)
   home.classList.add("active")
@@ -360,89 +366,144 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function renderWeekly(refDate) {
-    if (!weeklyChart) return
     const start = startOfWeek(refDate)
-    // label
     const end = new Date(start)
     end.setDate(end.getDate() + 6)
     if (weekLabel) weekLabel.textContent = `${formatShort(start)} - ${formatShort(end)}`
 
-    // compute sums per day
-    const days = []
-    for (let i=0;i<7;i++) {
-      const d = new Date(start)
-      d.setDate(d.getDate() + i)
-      d.setHours(0,0,0,0)
-      const total = expenses.reduce((sum,e) => {
-        const ed = new Date(e.date); ed.setHours(0,0,0,0)
-        return sum + ((ed.getTime() === d.getTime()) ? Number(e.amount||0) : 0)
-      }, 0)
-      days.push({ date: d, total })
+    // Calculate current week total and daily average
+    const currentWeekTotal = expenses.reduce((sum, e) => {
+      const ed = new Date(e.date); ed.setHours(0,0,0,0)
+      return (ed.getTime() >= start.getTime() && ed.getTime() <= end.getTime()) 
+        ? sum + Number(e.amount||0) : sum
+    }, 0)
+    
+    const dailyAverage = currentWeekTotal / 7
+    if (dailyAverageAmount) {
+      dailyAverageAmount.textContent = `$${dailyAverage.toFixed(2)}`
     }
 
-    // prepare axis and bars (fixed physical size handled by CSS)
-    const maxData = Math.max(...days.map(d=>d.total), 0)
-    // round top value up to nearest 50 for clean axis (e.g. 525 -> 550)
-    let topValue = Math.ceil((Math.max(maxData, Number(settings.dailyLimit) || 0)) / 50) * 50
-    if (topValue === 0) topValue = 50
-    weeklyChart.innerHTML = ''
-    const axis = document.createElement('div')
-    axis.className = 'weekly-axis'
-    // 5 ticks (top -> bottom)
-    for (let i=4;i>=0;i--) {
-      const v = topValue * (i/4)
-      const rounded = Math.round(v / 10) * 10
-      const tick = document.createElement('div')
-      tick.textContent = `$${rounded}`
-      axis.appendChild(tick)
+    // Calculate previous week for comparison
+    const prevWeekStart = new Date(start)
+    prevWeekStart.setDate(prevWeekStart.getDate() - 7)
+    const prevWeekEnd = new Date(prevWeekStart)
+    prevWeekEnd.setDate(prevWeekEnd.getDate() + 6)
+    
+    const previousWeekTotal = expenses.reduce((sum, e) => {
+      const ed = new Date(e.date); ed.setHours(0,0,0,0)
+      return (ed.getTime() >= prevWeekStart.getTime() && ed.getTime() <= prevWeekEnd.getTime()) 
+        ? sum + Number(e.amount||0) : sum
+    }, 0)
+    
+    const previousDailyAverage = previousWeekTotal / 7
+    const changePercent = previousDailyAverage > 0 
+      ? ((dailyAverage - previousDailyAverage) / previousDailyAverage) * 100
+      : 0
+    
+    if (weeklyChangePercentage) {
+      const isPositive = changePercent > 0
+      const isNegative = changePercent < 0
+      weeklyChangePercentage.textContent = `${isPositive ? '+' : ''}${changePercent.toFixed(0)}%`
+      weeklyChangePercentage.className = `change-percentage ${isPositive ? 'positive' : isNegative ? 'negative' : 'neutral'}`
     }
-    const container = document.createElement('div')
-    container.className = 'weekly-container'
-    days.forEach(day => {
-      const el = document.createElement('div')
-      el.className = 'day-bar'
-      const bar = document.createElement('div')
-      bar.className = 'bar'
-      const pct = topValue > 0 ? (day.total / topValue) : 0
-      const maxHeight = 140
-      const h = pct * maxHeight
-      bar.style.height = `${h}px`
-      const lbl = document.createElement('div')
-      lbl.className = 'label'
-      lbl.textContent = day.date.toLocaleDateString('en-US', { weekday: 'short' })
-      el.appendChild(bar)
-      el.appendChild(lbl)
-      container.appendChild(el)
+
+    // Calculate category totals for the week
+    const categoryTotals = {}
+    const categoryTransactions = {}
+    expenses.forEach(e => {
+      const ed = new Date(e.date); ed.setHours(0,0,0,0)
+      if (ed.getTime() >= start.getTime() && ed.getTime() <= end.getTime()) {
+        categoryTotals[e.category] = (categoryTotals[e.category] || 0) + Number(e.amount||0)
+        categoryTransactions[e.category] = (categoryTransactions[e.category] || 0) + 1
+      }
     })
-    weeklyChart.appendChild(axis)
-    weeklyChart.appendChild(container)
 
-    // average and summary
-    const totalWeek = days.reduce((s,d)=>s+d.total,0)
-    const avg = totalWeek / 7
-    const avgEl = document.createElement('div')
-    avgEl.className = 'week-average'
-    avgEl.textContent = `Avg: $${avg.toFixed(2)}`
-    weeklyChart.appendChild(avgEl)
+    // Render category bars
+    if (categoryBarsContainer) {
+      categoryBarsContainer.innerHTML = ''
+      
+      // Handle case when no expenses exist
+      if (Object.keys(categoryTotals).length === 0) {
+        const noDataMsg = document.createElement('div')
+        noDataMsg.style.cssText = 'text-align: center; color: #8e8e93; font-size: 16px; padding: 40px 0;'
+        noDataMsg.textContent = 'No spending this week'
+        categoryBarsContainer.appendChild(noDataMsg)
+      } else {
+        const maxCategoryAmount = Math.max(...Object.values(categoryTotals), 0)
+        
+        Object.keys(categoryTotals).sort((a, b) => categoryTotals[b] - categoryTotals[a]).forEach(category => {
+          const amount = categoryTotals[category]
+          const barContainer = document.createElement('div')
+          barContainer.className = 'category-bar'
+          
+          const nameEl = document.createElement('div')
+          nameEl.className = 'category-name'
+          nameEl.textContent = category
+          
+          const barFillContainer = document.createElement('div')
+          barFillContainer.className = 'bar-container'
+          
+          const barFill = document.createElement('div')
+          // Convert category name to CSS class format
+          const categoryClass = category.replace(/\s+/g, '-').replace(/&/g, '').toLowerCase()
+          barFill.className = `bar-fill ${categoryClass}`
+          const percentage = maxCategoryAmount > 0 ? (amount / maxCategoryAmount) * 100 : 0
+          barFill.style.width = `${percentage}%`
+          
+          barFillContainer.appendChild(barFill)
+          
+          const amountEl = document.createElement('div')
+          amountEl.className = 'category-amount'
+          amountEl.textContent = `$${amount.toFixed(2)}`
+          
+          barContainer.appendChild(nameEl)
+          barContainer.appendChild(barFillContainer)
+          barContainer.appendChild(amountEl)
+          
+          categoryBarsContainer.appendChild(barContainer)
+        })
+      }
+    }
 
-    // weekly budget and category totals
-    if (weeklyBudgetValue) weeklyBudgetValue.textContent = `$${((Number(settings.dailyLimit)||0)*7).toFixed(2)}`
-    if (weeklyCategoriesEl) {
-      weeklyCategoriesEl.innerHTML = ''
-      const catTotals = {}
-      expenses.forEach(e => {
-        const ed = new Date(e.date); ed.setHours(0,0,0,0)
-        if (ed.getTime() >= start.getTime() && ed.getTime() <= end.getTime()) {
-          catTotals[e.category] = (catTotals[e.category] || 0) + Number(e.amount||0)
-        }
-      })
-      Object.keys(catTotals).forEach(cat => {
-        const el = document.createElement('div')
-        el.className = 'cat'
-        el.textContent = `${cat}: $${catTotals[cat].toFixed(2)}`
-        weeklyCategoriesEl.appendChild(el)
+    // Render most used section
+    if (mostUsedContainer) {
+      mostUsedContainer.innerHTML = ''
+      const sortedCategories = Object.keys(categoryTotals)
+        .sort((a, b) => categoryTotals[b] - categoryTotals[a])
+        .slice(0, 5) // Show top 5
+      
+      sortedCategories.forEach((category, index) => {
+        const amount = categoryTotals[category]
+        const transactions = categoryTransactions[category] || 0
+        
+        const item = document.createElement('div')
+        item.className = 'most-used-item'
+        
+        const info = document.createElement('div')
+        info.className = 'category-info'
+        
+        const name = document.createElement('div')
+        name.className = 'category-name'
+        name.textContent = category
+        
+        const transactionInfo = document.createElement('div')
+        transactionInfo.className = 'category-transactions'
+        transactionInfo.textContent = `${transactions} ${transactions === 1 ? 'transaction' : 'transactions'}`
+        
+        info.appendChild(name)
+        info.appendChild(transactionInfo)
+        
+        const total = document.createElement('div')
+        total.className = 'category-total'
+        total.textContent = `$${amount.toFixed(2)}`
+        
+        item.appendChild(info)
+        item.appendChild(total)
+        
+        mostUsedContainer.appendChild(item)
       })
     }
+
     // update weekly progress to reflect this viewed week
     try { updateProgress() } catch(err) { console.error(err) }
   }

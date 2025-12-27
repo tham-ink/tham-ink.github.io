@@ -246,12 +246,188 @@ header {
 .transaction .meta .comment { font-size:13px; color:#666; margin-top:4px; }
 .transaction .amount { font-weight:700; }
 
-/* weekly chart */
-.weekly-chart { display:flex; gap:12px; align-items:end; padding:24px; justify-content:center; }
-.day-bar { display:flex; flex-direction:column; align-items:center; gap:8px; }
-.day-bar .bar { width:28px; background:linear-gradient(180deg,#7be08a,#5fcf6b); border-radius:6px; transition:height 300ms; }
-.day-bar .label { font-size:12px; color:#444; margin-top:6px; }
-.week-average { text-align:center; color:#666; font-size:13px; margin-top:8px; }
+/* iOS-style weekly overview */
+.weekly-overview {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px;
+  background: #f8f9fa;
+  border-radius: 16px;
+  margin: 16px 0;
+}
+
+.daily-average {
+  text-align: left;
+}
+
+.average-amount {
+  font-size: 32px;
+  font-weight: 700;
+  color: #1d1d1f;
+  line-height: 1.2;
+}
+
+.average-label {
+  font-size: 14px;
+  color: #6d6d6d;
+  margin-top: 4px;
+}
+
+.weekly-change {
+  text-align: right;
+}
+
+.change-percentage {
+  font-size: 28px;
+  font-weight: 600;
+  color: #ff3b30;
+}
+
+.change-percentage.positive {
+  color: #ff3b30;
+}
+
+.change-percentage.negative {
+  color: #34c759;
+}
+
+.change-percentage.neutral {
+  color: #8e8e93;
+}
+
+.change-label {
+  display: block;
+  font-size: 14px;
+  color: #6d6d6d;
+  margin-top: 4px;
+}
+
+/* Category spending bars */
+.weekly-categories-section {
+  margin: 24px 0;
+}
+
+.weekly-categories-section h3 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1d1d1f;
+  margin-bottom: 16px;
+  padding: 0 24px;
+}
+
+.category-bars {
+  padding: 0 24px;
+}
+
+.category-bar {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+  gap: 12px;
+}
+
+.category-bar:last-child {
+  margin-bottom: 0;
+}
+
+.category-bar .category-name {
+  min-width: 100px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #1d1d1f;
+  text-transform: capitalize;
+}
+
+.category-bar .bar-container {
+  flex: 1;
+  height: 8px;
+  background: #f2f2f7;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.category-bar .bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 300ms ease;
+}
+
+.category-bar .category-amount {
+  min-width: 60px;
+  text-align: right;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1d1d1f;
+}
+
+/* Most used section */
+.most-used-section {
+  margin: 24px 0;
+}
+
+.most-used-section h3 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1d1d1f;
+  margin-bottom: 16px;
+  padding: 0 24px;
+}
+
+.most-used-list {
+  padding: 0 24px;
+}
+
+.most-used-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background: white;
+  border-radius: 12px;
+  margin-bottom: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.most-used-item:last-child {
+  margin-bottom: 0;
+}
+
+.most-used-item .category-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.most-used-item .category-name {
+  font-size: 16px;
+  font-weight: 500;
+  color: #1d1d1f;
+  text-transform: capitalize;
+}
+
+.most-used-item .category-transactions {
+  font-size: 12px;
+  color: #8e8e93;
+  margin-top: 2px;
+}
+
+.most-used-item .category-total {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1d1d1f;
+}
+
+/* Category colors for bars */
+.category-bar .bar-fill.eating-out { background: linear-gradient(90deg, #ff9500, #ff6b35); }
+.category-bar .bar-fill.monster-energy { background: linear-gradient(90deg, #5856d6, #007aff); }
+.category-bar .bar-fill.groceries { background: linear-gradient(90deg, #34c759, #30d158); }
+.category-bar .bar-fill.entertainment { background: linear-gradient(90deg, #af52de, #bf5af2); }
+.category-bar .bar-fill.bills-subscriptions { background: linear-gradient(90deg, #ff3b30, #ff453a); }
+.category-bar .bar-fill.bills { background: linear-gradient(90deg, #ff3b30, #ff453a); }
+.category-bar .bar-fill.shopping { background: linear-gradient(90deg, #ff9500, #ff8c00); }
+.category-bar .bar-fill.other { background: linear-gradient(90deg, #8e8e93, #a1a1a6); }
+
+/* Hide old weekly chart styles since we're replacing them */
 
 /* add screen overrides - ensure green theme */
 #add {
