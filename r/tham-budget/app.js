@@ -178,37 +178,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* screen switching */
   openAdd.addEventListener("click", () => {
-    // Add growing animation
-    openAdd.classList.add('animate')
-    
-    // Create full-screen transition overlay
-    const overlay = document.createElement('div')
-    overlay.className = 'transition-overlay'
-    document.body.appendChild(overlay)
-    
-    // Create ripple effect for additional feedback
-    const ripple = document.createElement('div')
-    ripple.className = 'ripple'
-    document.body.appendChild(ripple)
-    
-    // Navigate to add screen after short delay to let animation start
-    setTimeout(() => {
-      home.classList.remove("active")
-      add.classList.add("active")
-      currentAmount = ""
-      updateAmount()
-    }, 200)
-    
-    // Remove animation elements after animation completes
-    setTimeout(() => {
-      openAdd.classList.remove('animate')
-      if (overlay.parentNode) {
-        overlay.parentNode.removeChild(overlay)
-      }
-      if (ripple.parentNode) {
-        ripple.parentNode.removeChild(ripple)
-      }
-    }, 800)
+    // Navigate directly to add screen without animations
+    home.classList.remove("active")
+    add.classList.add("active")
+    currentAmount = ""
+    updateAmount()
   })
 
   // open transactions / weekly
