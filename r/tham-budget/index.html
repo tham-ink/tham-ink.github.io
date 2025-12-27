@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>t.budget</title>
+
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- CATEGORY / HOME -->
+  <main id="home" class="screen active">
+
+    <header>
+      <h1>t.budget</h1>
+
+      <button id="open-settings" class="settings-btn" aria-label="Settings">⚙</button>
+
+      <div class="date-nav">
+        <button id="prev-day">◀</button>
+        <span id="date-label"></span>
+        <button id="next-day">▶</button>
+      </div>
+    </header>
+    <div class="progress-container">
+      <div class="progress-label">Daily limit</div>
+      <div class="progress">
+        <div class="progress-fill" style="width:0%"></div>
+      </div>
+      <div class="progress-stats"><span class="today-amount">$0.00</span> / <span class="daily-limit">$0.00</span></div>
+    </div>
+
+    <section class="categories"></section>
+    <div class="fab-row">
+      <button id="open-transactions" class="fab-secondary left" aria-label="Transactions">☰</button>
+      <button id="open-add" class="fab">+</button>
+      <button id="open-weekly" class="fab-secondary right" aria-label="Weekly">▦</button>
+    </div>
+  </main>
+
+  <!-- ADD MONEY -->
+  <main id="add" class="screen">
+    <!-- pay screen (green theme) -->
+    <div class="amount-display">$0</div>
+
+    <div class="controls">
+      <input id="comment" class="comment-input" placeholder="Add a comment (optional)" />
+
+      <!-- category dropdown (placed below comment; styled like the USD pill) -->
+      <select id="category" class="category-pill">
+        <option value="food">eating out</option>
+        <option value="monster energy">monster energy</option>
+        <option value="groceries">groceries</option>
+        <option value="entertainment">entertainment</option>
+        <option value="bills">bills & subscriptions</option>
+        <option value="shopping">shopping</option>
+        <option value="other">other</option>
+      </select>
+
+      <section class="keypad">
+        <button>1</button><button>2</button><button>3</button>
+        <button>4</button><button>5</button><button>6</button>
+        <button>7</button><button>8</button><button>9</button>
+        <button class="dot">.</button><button>0</button><button class="del">⌫</button>
+      </section>
+    </div>
+
+    <div class="bottom-actions">
+      <button id="cancel-add" class="pill-btn secondary">Cancel</button>
+      <button id="save-expense" class="pill-btn primary">Add</button>
+    </div>
+  </main>
+
+  <!-- TRANSACTIONS LIST -->
+  <main id="transactions" class="screen">
+    <header>
+      <button id="back-from-trans" class="back-btn">←</button>
+      <h1>Transactions</h1>
+    </header>
+    <section id="transactions-list" class="transactions-list"></section>
+  </main>
+
+  <!-- WEEKLY VIEW -->
+  <main id="weekly" class="screen">
+    <header>
+      <button id="back-from-week" class="back-btn">←</button>
+      <h1>Weekly</h1>
+      <div class="date-nav">
+        <button id="prev-week">◀</button>
+        <span id="week-label"></span>
+        <button id="next-week">▶</button>
+      </div>
+    </header>
+      <div class="weekly-progress-container">
+        <div class="progress-label">Week progress</div>
+        <div class="progress">
+          <div class="progress-fill weekly-progress-fill" style="width:0%"></div>
+        </div>
+        <div class="progress-stats"><span class="week-to-date">$0.00</span> / <span class="weekly-budget">$0.00</span></div>
+      </div>
+    <section id="weekly-chart" class="weekly-chart"></section>
+    <div class="weekly-summary">
+      <div class="weekly-budget">Weekly budget: <span class="weekly-budget-value">$0.00</span></div>
+      <div id="weekly-categories" class="weekly-categories"></div>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+
+  <!-- Settings modal -->
+  <div id="settings" class="modal" hidden>
+    <div class="modal-content">
+      <h2>Settings</h2>
+      <label for="daily-limit">Daily limit</label>
+      <input id="daily-limit" type="number" min="0" step="0.01" />
+      <div class="modal-actions">
+        <button id="export-csv">Export CSV</button>
+        <button id="save-settings">Save</button>
+        <button id="close-settings">Close</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
